@@ -1,0 +1,15 @@
+pane	HTML	1	:vim	1	:*	0	:/home/guillaume/IGR/IGR203/web	1	vim	:vim
+pane	INF280	1	:vim	1	:*	0	:/home/guillaume/INF280/jumping_monkey	0	vim	:vim main.cpp
+pane	INF280	1	:vim	1	:*	1	:/home/guillaume/INF280/jumping_monkey	0	fish	:
+pane	INF280	1	:vim	1	:*	2	:/home/guillaume/INF280/jumping_monkey	1	vim	:vim sample_input
+pane	MP01	1	:fish	1	:*	0	:/home/guillaume/MP01/messages	0	vim	:vim
+pane	MP01	1	:fish	1	:*	1	:/home/guillaume/MP01/messages	1	fish	:
+pane	MP01	1	:fish	1	:*	2	:/home/guillaume/MP01/messages	0	fish	:
+pane	tiger	1	:editor	1	:*	0	:/home/guillaume/SE/SE202/tiger	1	vim	:vim
+pane	tiger	1	:editor	1	:*	1	:/home/guillaume/SE/SE202/tiger	0	fish	:
+pane	tiger	1	:editor	1	:*	2	:/home/guillaume/SE/SE202/tiger	0	vim	:vim input
+window	HTML	1	1	:*	cffe,141x68,0,0,1
+window	INF280	1	1	:*	9c7f,141x68,0,0{94x68,0,0,2,46x68,95,0[46x42,95,0,3,46x25,95,43,4]}
+window	MP01	1	1	:*	0af4,141x68,0,0{107x68,0,0,5,33x68,108,0[33x34,108,0,6,33x33,108,35,7]}
+window	tiger	1	1	:*	0e6a,141x68,0,0{108x68,0,0,8,32x68,109,0[32x43,109,0,9,32x24,109,44,10]}
+state	INF280	

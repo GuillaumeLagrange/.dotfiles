@@ -1,0 +1,15 @@
+pane	0	1	:fish	1	:*	0	:/home/guillaume	1	fish	:
+pane	1	1	:fish	1	:*	0	:/home/guillaume	1	fish	:
+pane	3	1	:fish	1	:*	0	:/home/guillaume	1	fish	:
+pane	5	1	:fish	1	:*	0	:/home/guillaume	1	fish	:
+pane	tiger	1	:editor	0	:-	0	:/home/guillaume/SE/SE202/tiger	0	vim	:vim
+pane	tiger	1	:editor	0	:-	1	:/home/guillaume/SE/SE202/tiger	1	fish	:
+pane	tiger	1	:editor	0	:-	2	:/home/guillaume/SE/SE202/tiger	0	vim	:vim input
+pane	tiger	2	:console	1	:*	0	:/home/guillaume/SE/SE202/tiger	1	fish	:
+window	0	1	1	:*	ae5d,80x23,0,0,0
+window	1	1	1	:*	ae5e,80x23,0,0,1
+window	3	1	1	:*	ae63,80x23,0,0,6
+window	5	1	1	:*	5760,80x23,0,0,11
+window	tiger	1	0	:-	8eed,238x64,0,0{190x64,0,0,7,47x64,191,0[47x58,191,0,8,47x5,191,59,9]}
+window	tiger	2	1	:*	61df,238x64,0,0,10
+state	tiger	1

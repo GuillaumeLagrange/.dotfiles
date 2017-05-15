@@ -1,0 +1,17 @@
+pane	INF280	1	:vim	1	:*	0	:/home/guillaume/INF280/trash_removal	0	vim	:vim main.cpp sample_input
+pane	INF280	1	:vim	1	:*	1	:/home/guillaume/INF280/trash_removal	1	fish	:
+pane	MP01	1	:fish	1	:*	0	:/home/guillaume/MP01/messages	1	vim	:vim
+pane	MP01	1	:fish	1	:*	1	:/home/guillaume/MP01/messages	0	fish	:
+pane	MP01	1	:fish	1	:*	2	:/home/guillaume/MP01/messages	0	fish	:
+pane	SE205	1	:vim	1	:*	0	:/home/guillaume/SE/SE205/TD2	0	vim	:vim td2.1_simple_threads.c
+pane	SE205	1	:vim	1	:*	1	:/home/guillaume/SE/SE205/TD2	1	vim	:vim output
+pane	SystemC	1	:vim	1	:*	0	:/home/guillaume/SE/SE207/TP1	1	vim	:vim
+pane	tiger	1	:editor	1	:*	0	:/home/guillaume/SE/SE202/tiger	1	vim	:vim
+pane	tiger	2	:python3	0	:-	0	:/home/guillaume/SE/SE202/tiger	1	fish	:
+window	INF280	1	1	:*	d2bc,141x68,0,0{95x68,0,0,2,45x68,96,0,3}
+window	MP01	1	1	:*	4ad3,141x68,0,0{107x68,0,0,4,33x68,108,0[33x34,108,0,5,33x33,108,35,6]}
+window	SE205	1	1	:*	57c3,141x68,0,0{86x68,0,0,7,54x68,87,0,8}
+window	SystemC	1	1	:*	cffe,141x68,0,0,1
+window	tiger	1	1	:*	d006,141x68,0,0,9
+window	tiger	2	0	:-	682f,141x68,0,0,10
+state	SystemC	
