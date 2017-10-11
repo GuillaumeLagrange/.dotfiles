@@ -1,9 +1,0 @@
-pane	1	1	:fish	1	:*	0	:/home/guillaume	1	fish	:
-pane	tiger	1	:editor	1	:*	0	:/home/guillaume/SE/SE202/tiger	1	vim	:vim
-pane	tiger	1	:editor	1	:*	1	:/home/guillaume/SE/SE202/tiger	0	fish	:
-pane	tiger	1	:editor	1	:*	2	:/home/guillaume/SE/SE202/tiger	0	vim	:vim input
-pane	tiger	2	:console	0	:-	0	:/home/guillaume/SE/SE202/tiger	1	bash	:bash
-window	1	1	1	:*	c363,238x64,0,0,6
-window	tiger	1	1	:*	2306,238x64,0,0{164x64,0,0,0,73x64,165,0[73x56,165,0,3,73x7,165,57,4]}
-window	tiger	2	0	:-	c35e,238x64,0,0,1
-state	tiger	1

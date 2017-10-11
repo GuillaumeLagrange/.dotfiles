@@ -2,12 +2,12 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/guillaume/.oh-my-zsh
+  export ZSH=~/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="agnoster"
+ZSH_THEME="gnzh"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -59,7 +59,13 @@ source $ZSH/oh-my-zsh.sh
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
+export PATH=~/scripts:$PATH
+export PATH=/opt/JLink_Linux_V620c_x86_64:$PATH
+export PATH=/opt/gcc-arm-none-eabi-5_4-2016q3/bin:$PATH
 export LD_LIBRARY_PATH=/opt/systemc/lib-linux64:$LD_LIBRARY_PATH
+export VISUAL=vim
+export EDITOR="$VISUAL"
+alias dualscreen="xrandr --output HDMI1 --auto --above eDP1"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -85,3 +91,7 @@ export LD_LIBRARY_PATH=/opt/systemc/lib-linux64:$LD_LIBRARY_PATH
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

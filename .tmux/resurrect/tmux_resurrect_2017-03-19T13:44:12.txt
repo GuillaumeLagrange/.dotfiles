@@ -1,9 +1,0 @@
-pane	MP01	1	:vim	1	:*	0	:/home/guillaume/MP01/messages	1	vim	:vim
-pane	MP01	1	:vim	1	:*	1	:/home/guillaume/MP01/messages	0	fish	:
-pane	MP01	1	:vim	1	:*	2	:/home/guillaume/MP01/messages	0	fish	:
-pane	tiger	1	:editor	1	:*	0	:/home/guillaume/SE/SE202/tiger	0	vim	:vim
-pane	tiger	1	:editor	1	:*	1	:/home/guillaume/SE/SE202/tiger	1	fish	:
-pane	tiger	1	:editor	1	:*	2	:/home/guillaume/SE/SE202/tiger	0	vim	:vim input
-window	MP01	1	1	:*	16b4,238x64,0,0{161x64,0,0,13,76x64,162,0[76x32,162,0,14,76x31,162,33,15]}
-window	tiger	1	1	:*	a91b,238x64,0,0{156x64,0,0,7,81x64,157,0[81x41,157,0,8,81x22,157,42,9]}
-state	MP01	
