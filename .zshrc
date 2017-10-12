@@ -61,7 +61,8 @@ source $ZSH/oh-my-zsh.sh
 
 export PATH=~/scripts:$PATH
 export PATH=/opt/JLink_Linux_V620c_x86_64:$PATH
-export PATH=/opt/gcc-arm-none-eabi-5_4-2016q3/bin:$PATH
+# export PATH=/opt/gcc-arm-none-eabi-5_4-2016q3/bin:$PATH
+export PATH=/opt/gcc-arm-none-eabi-6-2017-q2-update/bin:$PATH
 export LD_LIBRARY_PATH=/opt/systemc/lib-linux64:$LD_LIBRARY_PATH
 export VISUAL=vim
 export EDITOR="$VISUAL"
