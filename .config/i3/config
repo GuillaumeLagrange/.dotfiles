@@ -42,6 +42,9 @@ bindsym $mod+Shift+a kill
 # installed.
 bindsym $mod+d exec --no-startup-id ~/soft/bin/dmenu_run
 
+# firefox
+bindsym $mod+w exec firefox
+
 # change focus
 bindsym $mod+h focus left
 bindsym $mod+j focus down
