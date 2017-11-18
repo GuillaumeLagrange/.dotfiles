@@ -9,6 +9,7 @@ Plug 'scrooloose/syntastic'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'joshdick/onedark.vim'
 Plug 'dracula/vim'
+Plug 'tomasr/molokai'
 Plug 'godlygeek/tabular'
 Plug 'vim-airline/vim-airline'
 Plug 'rhysd/vim-clang-format'
@@ -94,7 +95,7 @@ let g:onedark_termcolors = 256
 if (has("termguicolors"))
   set termguicolors
 endif
-colorscheme dracula
+colorscheme molokai
 
 " NERD Tree mappings
 nnoremap <leader>d :NERDTreeToggle<CR> :winc =<CR>
