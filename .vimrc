@@ -12,12 +12,14 @@ Plug 'dracula/vim'
 Plug 'tomasr/molokai'
 Plug 'godlygeek/tabular'
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'rhysd/vim-clang-format'
 Plug 'tpope/vim-fugitive'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
 Plug 'airblade/vim-gitgutter'
 Plug 'suan/vim-instant-markdown'
+Plug 'bronson/vim-trailing-whitespace'
 
 call plug#end()
 
@@ -60,16 +62,12 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 nnoremap <C-j> <C-w>j
 
-" Whitespace fixes
-highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$/
-
 " Strips whitespace
-nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+nnoremap <leader>W :FixWhitespace<CR>
 
 " Airline settings
 let g:airline_powerline_fonts = 1
-let g:airline_theme='onedark'
+let g:airline_theme='molokai'
 let g:airline#extensions#tabline#enabled = 1
 
 " NERD Tree settings
