@@ -226,9 +226,9 @@ bar {
 # Autostarts
 
 # NetworkManager applet
-exec_always --no-startup-id nm-applet
+exec --no-startup-id nm-applet
 # Disable screensave when fullscreen
 exec_always --no-startup-id python3 ~/scripts/disable-standby-fs.py
 # Redshift
-exec_always --no-startup-id redshift-gtk
+exec --no-startup-id redshift-gtk
 
