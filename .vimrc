@@ -71,6 +71,7 @@ let g:airline_theme='molokai'
 let g:airline#extensions#tabline#enabled = 1
 
 " NERD Tree settings
+let NERDTreeMinimalUI=1
 " Have NERD Tree open when no file specified
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
