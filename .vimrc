@@ -2,10 +2,8 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'jiangmiao/auto-pairs'
 Plug 'mattn/emmet-vim'
-Plug 'Shougo/neocomplete.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/syntastic'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'joshdick/onedark.vim'
 Plug 'dracula/vim'
@@ -20,6 +18,10 @@ Plug 'tpope/vim-surround'
 Plug 'airblade/vim-gitgutter'
 Plug 'suan/vim-instant-markdown'
 Plug 'bronson/vim-trailing-whitespace'
+Plug 'roxma/nvim-completion-manager'
+Plug 'roxma/ncm-clang'
+Plug 'majutsushi/tagbar'
+Plug 'w0rp/ale'
 
 call plug#end()
 
@@ -47,6 +49,7 @@ set hlsearch
 set cursorline
 set colorcolumn=80
 set mouse=a
+set guicursor=
 
 " Arrow keys
 noremap <Down> gj
@@ -114,20 +117,22 @@ let g:NERDSpaceDelims = 1
 autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Neocomplete
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" nvm-completion-manager
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Syntastic
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Neovim terminal mappings
+tnoremap <Esc> <C-\><C-n>
+
+" ALE
+let g:ale_linters = {
+            \   'c': ['gcc'],
+            \}
+autocmd BufEnter *.c,*.h let g:ale_c_gcc_options = join(ncm_clang#compilation_info()['args'], ' ')
+
+" (optional, for completion performance) run linters only when I save files
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_enter = 0
+
+" Tagbar
+nnoremap <F5>  :TagbarToggle<CR>
