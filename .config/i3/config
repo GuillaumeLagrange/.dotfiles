@@ -198,7 +198,7 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-set $Locker (bash ~/scripts/lock.sh) && sleep 1
+set $Locker (bash ~/scripts/lock.sh)
 
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
@@ -221,6 +221,7 @@ bindsym $mod+Escape mode "$mode_system"
 bar {
         status_command i3status
         tray_output primary
+        position top
 }
 
 # Autostarts

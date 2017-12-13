@@ -65,9 +65,10 @@ source $ZSH/oh-my-zsh.sh
 
 export PATH=~/scripts:$PATH
 # export PATH=/opt/gcc-arm-none-eabi-5_4-2016q3/bin:$PATH
-export VISUAL=vim
+export VISUAL=nvim
 export EDITOR="$VISUAL"
-alias vi="vim"
+alias vi="nvim"
+alias vim="nvim"
 alias dualscreen="xrandr --output HDMI1 --auto --above eDP1"
 
 # You may need to manually set your language environment
