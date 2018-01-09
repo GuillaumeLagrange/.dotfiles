@@ -51,7 +51,11 @@ ZSH_THEME="gnzh"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(
+    git
+    archlinux
+    npm
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -60,12 +64,11 @@ source $ZSH/oh-my-zsh.sh
 # export MANPATH="/usr/local/man:$MANPATH"
 
 export PATH=~/scripts:$PATH
-export PATH=/opt/JLink_Linux_V620c_x86_64:$PATH
 # export PATH=/opt/gcc-arm-none-eabi-5_4-2016q3/bin:$PATH
-export PATH=/opt/gcc-arm-none-eabi-6-2017-q2-update/bin:$PATH
-export LD_LIBRARY_PATH=/opt/systemc/lib-linux64:$LD_LIBRARY_PATH
-export VISUAL=vim
+export VISUAL=nvim
 export EDITOR="$VISUAL"
+alias vi="nvim"
+alias vim="nvim"
 alias dualscreen="xrandr --output HDMI1 --auto --above eDP1"
 
 # You may need to manually set your language environment
@@ -96,3 +99,14 @@ alias dualscreen="xrandr --output HDMI1 --auto --above eDP1"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# man page colors
+man() {
+    LESS_TERMCAP_md=$'\e[01;31m' \
+    LESS_TERMCAP_me=$'\e[0m' \
+    LESS_TERMCAP_se=$'\e[0m' \
+    LESS_TERMCAP_so=$'\e[01;44;33m' \
+    LESS_TERMCAP_ue=$'\e[0m' \
+    LESS_TERMCAP_us=$'\e[01;32m' \
+    command man "$@"
+}

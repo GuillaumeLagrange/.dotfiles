@@ -17,7 +17,7 @@ set $mod Mod4
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango:Inconsolatas Sans Mono 10 
+font pango:Inconsolatas Sans Mono 10
 
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -44,6 +44,9 @@ bindsym $mod+d exec --no-startup-id ~/soft/bin/dmenu_run
 
 # firefox
 bindsym $mod+w exec firefox
+
+# thunderbird
+bindsym $mod+m exec thunderbird
 
 # change focus
 bindsym $mod+h focus left
@@ -156,9 +159,9 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 1 +5% #increase sound volume
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 1 -5% #decrease sound volume
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 1 toggle # mute sound
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
 
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
@@ -195,14 +198,14 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-set $Locker (bash ~/scripts/lock.sh) && sleep 1
+set $Locker (bash ~/scripts/lock.sh)
 
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
     bindsym l exec --no-startup-id $Locker, mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
-    bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
-    bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
+    bindsym s exec --no-startup-id systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id systemctl hibernate, mode "default"
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
     bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
 
@@ -218,4 +221,15 @@ bindsym $mod+Escape mode "$mode_system"
 bar {
         status_command i3status
         tray_output primary
+        position top
 }
+
+# Autostarts
+
+# NetworkManager applet
+exec --no-startup-id nm-applet
+# Disable screensave when fullscreen
+exec_always --no-startup-id python3 ~/scripts/disable-standby-fs.py
+# Redshift
+exec --no-startup-id redshift-gtk
+

@@ -2,21 +2,26 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'jiangmiao/auto-pairs'
 Plug 'mattn/emmet-vim'
-Plug 'Shougo/neocomplete.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/syntastic'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'joshdick/onedark.vim'
 Plug 'dracula/vim'
+Plug 'tomasr/molokai'
 Plug 'godlygeek/tabular'
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'rhysd/vim-clang-format'
 Plug 'tpope/vim-fugitive'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
 Plug 'airblade/vim-gitgutter'
 Plug 'suan/vim-instant-markdown'
+Plug 'bronson/vim-trailing-whitespace'
+Plug 'roxma/nvim-completion-manager'
+Plug 'roxma/ncm-clang'
+Plug 'majutsushi/tagbar'
+Plug 'w0rp/ale'
 
 call plug#end()
 
@@ -44,6 +49,7 @@ set hlsearch
 set cursorline
 set colorcolumn=80
 set mouse=a
+set guicursor=
 
 " Arrow keys
 noremap <Down> gj
@@ -59,19 +65,16 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 nnoremap <C-j> <C-w>j
 
-" Whitespace fixes
-highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$/
-
 " Strips whitespace
-nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+nnoremap <leader>W :FixWhitespace<CR>
 
 " Airline settings
 let g:airline_powerline_fonts = 1
-let g:airline_theme='onedark'
+let g:airline_theme='molokai'
 let g:airline#extensions#tabline#enabled = 1
 
 " NERD Tree settings
+let NERDTreeMinimalUI=1
 " Have NERD Tree open when no file specified
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
@@ -94,7 +97,7 @@ let g:onedark_termcolors = 256
 if (has("termguicolors"))
   set termguicolors
 endif
-colorscheme dracula
+colorscheme molokai
 
 " NERD Tree mappings
 nnoremap <leader>d :NERDTreeToggle<CR> :winc =<CR>
@@ -114,20 +117,22 @@ let g:NERDSpaceDelims = 1
 autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Neocomplete
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" nvm-completion-manager
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Syntastic
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Neovim terminal mappings
+tnoremap <Esc> <C-\><C-n>
+
+" ALE
+let g:ale_linters = {
+            \   'c': ['gcc'],
+            \}
+autocmd BufEnter *.c,*.h let g:ale_c_gcc_options = join(ncm_clang#compilation_info()['args'], ' ')
+
+" (optional, for completion performance) run linters only when I save files
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_enter = 0
+
+" Tagbar
+nnoremap <F5>  :TagbarToggle<CR>
