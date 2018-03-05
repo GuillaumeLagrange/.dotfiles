@@ -36,11 +36,10 @@ bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Shift+a kill
 
 # start dmenu (a program launcher)
-#bindsym $mod+d exec dmenu_run
+bindsym $mod+d exec dmenu_run
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
-bindsym $mod+d exec --no-startup-id ~/soft/bin/dmenu_run
 
 # firefox
 bindsym $mod+w exec firefox
@@ -99,7 +98,7 @@ bindsym $mod+q focus parent
 bindsym $mod+a focus child
 
 # move workspace to other screen vertically
-bindsym $mod+x move workspace to output up
+bindsym $mod+x move workspace to output right
 
 # azerty
 ## switch to workspace
