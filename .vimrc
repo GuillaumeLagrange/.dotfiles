@@ -5,8 +5,8 @@ Plug 'mattn/emmet-vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'joshdick/onedark.vim'
 Plug 'dracula/vim'
+Plug 'embear/vim-localvimrc'
 Plug 'tomasr/molokai'
 Plug 'godlygeek/tabular'
 Plug 'vim-airline/vim-airline'
@@ -18,19 +18,18 @@ Plug 'tpope/vim-surround'
 Plug 'airblade/vim-gitgutter'
 Plug 'suan/vim-instant-markdown'
 Plug 'bronson/vim-trailing-whitespace'
-Plug 'roxma/nvim-completion-manager'
-Plug 'roxma/ncm-clang'
 Plug 'majutsushi/tagbar'
 Plug 'w0rp/ale'
-
+Plug 'roxma/nvim-completion-manager'
+Plug 'roxma/ncm-clang'
 call plug#end()
 
 syntax on
 filetype plugin indent on
 set number
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set expandtab
 set smarttab
 set encoding=utf-8
@@ -47,7 +46,7 @@ set ignorecase
 set smartcase
 set hlsearch
 set cursorline
-set colorcolumn=80
+set colorcolumn=100
 set mouse=a
 set guicursor=
 
@@ -92,8 +91,6 @@ endfunc
 nnoremap <C-n> :call NumberToggle()<cr>
 
 " Theme
-let g:onedark_terminal_italics = 1
-let g:onedark_termcolors = 256
 if (has("termguicolors"))
   set termguicolors
 endif
@@ -117,18 +114,13 @@ let g:NERDSpaceDelims = 1
 autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 
-" nvm-completion-manager
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
 " Neovim terminal mappings
 tnoremap <Esc> <C-\><C-n>
 
 " ALE
 let g:ale_linters = {
-            \   'c': ['gcc'],
+            \   'c': ['clangtidy'],
             \}
-autocmd BufEnter *.c,*.h let g:ale_c_gcc_options = join(ncm_clang#compilation_info()['args'], ' ')
 
 " (optional, for completion performance) run linters only when I save files
 let g:ale_lint_on_text_changed = 'never'
@@ -136,3 +128,5 @@ let g:ale_lint_on_enter = 0
 
 " Tagbar
 nnoremap <F5>  :TagbarToggle<CR>
+
+let g:deoplete#enable_at_startup = 1
