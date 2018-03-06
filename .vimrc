@@ -1,5 +1,4 @@
 call plug#begin('~/.vim/plugged')
-
 Plug 'jiangmiao/auto-pairs'
 Plug 'mattn/emmet-vim'
 Plug 'scrooloose/nerdcommenter'
@@ -20,8 +19,8 @@ Plug 'suan/vim-instant-markdown'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'majutsushi/tagbar'
 Plug 'w0rp/ale'
-Plug 'roxma/nvim-completion-manager'
-Plug 'roxma/ncm-clang'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'zchee/deoplete-clang'
 call plug#end()
 
 syntax on
@@ -117,6 +116,10 @@ autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 " Neovim terminal mappings
 tnoremap <Esc> <C-\><C-n>
 
+" Deoplete tab completion
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
 " ALE
 let g:ale_linters = {
             \   'c': ['clangtidy'],
@@ -124,7 +127,7 @@ let g:ale_linters = {
 
 " (optional, for completion performance) run linters only when I save files
 let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_enter = 0
+let g:ale_lint_on_enter = 1
 
 " Tagbar
 nnoremap <F5>  :TagbarToggle<CR>
