@@ -116,7 +116,11 @@ autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 " Neovim terminal mappings
 tnoremap <Esc> <C-\><C-n>
 
-" Deoplete tab completion
+" Deoplete
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libclang.so.1'
+let g:deoplete#sources#clang#clang_header = '/usr/lib/llvm-3.8/lib/clang'
+" tab completion
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
@@ -132,4 +136,3 @@ let g:ale_lint_on_enter = 1
 " Tagbar
 nnoremap <F5>  :TagbarToggle<CR>
 
-let g:deoplete#enable_at_startup = 1
