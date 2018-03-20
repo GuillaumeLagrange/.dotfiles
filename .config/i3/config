@@ -29,6 +29,9 @@ font pango:Inconsolatas Sans Mono 10
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+# Hide borders when window is alone in workspace (ubuntu LTS version too old...)
+hide_edge_borders both
+
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 
@@ -231,4 +234,8 @@ exec --no-startup-id nm-applet
 exec_always --no-startup-id python3 ~/scripts/disable-standby-fs.py
 # Redshift
 exec --no-startup-id redshift-gtk
+# Bluetooth applet
+exec --no-startup-id blueman-applet
+# Volume control
+exec --no-startup-id pasystray
 

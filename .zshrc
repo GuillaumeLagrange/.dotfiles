@@ -64,12 +64,17 @@ source $ZSH/oh-my-zsh.sh
 # export MANPATH="/usr/local/man:$MANPATH"
 
 export PATH=~/scripts:$PATH
+export PATH=~/embedded-tools/Linux/flasher:$PATH
+export PATH=~/embedded-tools/generic-embedded/stm32_dfu:$PATH
 # export PATH=/opt/gcc-arm-none-eabi-5_4-2016q3/bin:$PATH
 export VISUAL=nvim
 export EDITOR="$VISUAL"
 alias vi="nvim"
 alias vim="nvim"
 alias dualscreen="xrandr --output HDMI1 --auto --above eDP1"
+alias ma='make PFX=nmr all reflash TOOLS_DIR=/home/glagrange/embedded-tools SECRET=bbc0aecb52ff5a7ec496aa10369bc3b1'
+alias mca='make PFX=nmr clean all reflash TOOLS_DIR=/home/glagrange/embedded-tools SECRET=bbc0aecb52ff5a7ec496aa10369bc3b1'
+alias generate-tags='ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .'
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
