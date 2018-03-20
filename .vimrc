@@ -12,6 +12,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'rhysd/vim-clang-format'
 Plug 'tpope/vim-fugitive'
+Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
 Plug 'airblade/vim-gitgutter'
@@ -48,6 +49,9 @@ set cursorline
 set colorcolumn=100
 set mouse=a
 set guicursor=
+" Align on open parentheresis for indentation of multi-line statements
+set cinoptions=(0
+
 
 " Arrow keys
 noremap <Down> gj
@@ -123,6 +127,8 @@ let g:deoplete#sources#clang#clang_header = '/usr/lib/llvm-3.8/lib/clang'
 " tab completion
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" disable preview window
+set completeopt-=preview
 
 " ALE
 let g:ale_linters = {
@@ -135,4 +141,7 @@ let g:ale_lint_on_enter = 1
 
 " Tagbar
 nnoremap <F5>  :TagbarToggle<CR>
+
+" Gitlab plugin for fugitive
+let g:fugitive_gitlab_domains = ['https://gitlab.corp.netatmo.com']
 
