@@ -17,7 +17,7 @@ set $mod Mod4
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango:Inconsolatas Sans Mono 10
+font pango:Inconsolatas Sans Mono 8
 
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -200,7 +200,7 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-set $Locker (bash ~/scripts/lock.sh)
+set $Locker (bash ~/i3lock-fancy/lock)
 
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
@@ -238,4 +238,5 @@ exec --no-startup-id redshift-gtk
 exec --no-startup-id blueman-applet
 # Volume control
 exec --no-startup-id pasystray
-
+# Black background
+exec --no-startup-id xsetroot --solid "#000000"

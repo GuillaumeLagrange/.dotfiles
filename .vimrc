@@ -21,7 +21,11 @@ Plug 'bronson/vim-trailing-whitespace'
 Plug 'majutsushi/tagbar'
 Plug 'w0rp/ale'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-clang'
+" Plug 'zchee/deoplete-clang'
+Plug 'tpope/vim-unimpaired'
+" Install fzf in .fzf
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 call plug#end()
 
 syntax on
@@ -52,6 +56,9 @@ set guicursor=
 " Align on open parentheresis for indentation of multi-line statements
 set cinoptions=(0
 
+" Lifesaving
+nnoremap ; :
+vnoremap ; :
 
 " Arrow keys
 noremap <Down> gj
@@ -101,7 +108,6 @@ colorscheme molokai
 
 " NERD Tree mappings
 nnoremap <leader>d :NERDTreeToggle<CR> :winc =<CR>
-nnoremap <leader>f :NERDTreeFocus<CR> :winc =<CR>
 
 " Delete buffer without closing the window
 map <leader>q :bp<bar>sp<bar>bn<bar>bd<CR>
@@ -122,9 +128,9 @@ tnoremap <Esc> <C-\><C-n>
 
 " Deoplete
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libclang.so.1'
-let g:deoplete#sources#clang#clang_header = '/usr/lib/llvm-3.8/lib/clang'
-" tab completion
+" let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libclang.so.1'
+" let g:deoplete#sources#clang#clang_header = '/usr/lib/llvm-3.8/lib/clang'
+" " tab completion
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " disable preview window
@@ -144,4 +150,24 @@ nnoremap <F5>  :TagbarToggle<CR>
 
 " Gitlab plugin for fugitive
 let g:fugitive_gitlab_domains = ['https://gitlab.corp.netatmo.com']
+
+" fzf settings
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+nnoremap <leader>f :Files<CR>
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>t :Tags<CR>
 

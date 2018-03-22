@@ -64,6 +64,7 @@ source $ZSH/oh-my-zsh.sh
 # export MANPATH="/usr/local/man:$MANPATH"
 
 export PATH=~/scripts:$PATH
+export PATH=~/i3lock-fancy:$PATH
 export PATH=~/embedded-tools/Linux/flasher:$PATH
 export PATH=~/embedded-tools/generic-embedded/stm32_dfu:$PATH
 # export PATH=/opt/gcc-arm-none-eabi-5_4-2016q3/bin:$PATH
@@ -115,3 +116,5 @@ man() {
     LESS_TERMCAP_us=$'\e[01;32m' \
     command man "$@"
 }
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
