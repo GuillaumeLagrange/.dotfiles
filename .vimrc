@@ -53,6 +53,8 @@ set cursorline
 set colorcolumn=100
 set mouse=a
 set guicursor=
+" Allow reccursive search on path
+set path+=**
 " Align on open parentheresis for indentation of multi-line statements
 set cinoptions=(0
 
@@ -85,8 +87,8 @@ let g:airline#extensions#tabline#enabled = 1
 " NERD Tree settings
 let NERDTreeMinimalUI=1
 " Have NERD Tree open when no file specified
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" autocmd StdinReadPre * let s:std_in=1
+" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 " Vim close if onle NERD tree opened
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
@@ -122,9 +124,6 @@ let g:NERDSpaceDelims = 1
 " map to <Leader>cf in C++ code
 autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
-
-" Neovim terminal mappings
-tnoremap <Esc> <C-\><C-n>
 
 " Deoplete
 let g:deoplete#enable_at_startup = 1
@@ -168,6 +167,19 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
 nnoremap <leader>f :Files<CR>
+nnoremap <leader>h :Files ~<CR>
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>t :Tags<CR>
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-s': 'split',
+  \ 'ctrl-v': 'vsplit' }
+" Command for git grep
+" - fzf#vim#grep(command, with_column, [options], [fullscreen])
+command! -bang -nargs=* GGrep
+  \ call fzf#vim#grep(
+  \   'git grep --line-number '.shellescape(<q-args>), 0,
+  \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] }, <bang>0)
 
+" Tag generation
+command! MakeTags !ctags -R .

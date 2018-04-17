@@ -238,5 +238,5 @@ exec --no-startup-id redshift-gtk
 exec --no-startup-id blueman-applet
 # Volume control
 exec --no-startup-id pasystray
-# Black background
-exec --no-startup-id xsetroot --solid "#000000"
+# Dropbox
+exec --no-startup-id dropbox start
