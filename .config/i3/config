@@ -11,6 +11,9 @@
 
 set $mod Mod4
 
+set $leftmon HDMI1
+set $rightmon VGA1
+
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 #font pango:monospace 8
@@ -200,7 +203,7 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-set $Locker (bash ~/i3lock-fancy/lock)
+set $Locker (sh ~/scripts/lock.sh)
 
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
@@ -243,3 +246,16 @@ exec --no-startup-id dropbox start
 
 assign [class="Thunderbird"] 6
 for_window [class="Spotify"] move to workspace 10
+
+# Assign workspaces to monitors
+workspace "1" output $leftmon
+workspace "3" output $leftmon
+workspace "5" output $leftmon
+workspace "7" output $leftmon
+workspace "9" output $leftmon
+
+workspace "2" output $rightmon
+workspace "4" output $rightmon
+workspace "6" output $rightmon
+workspace "8" output $rightmon
+workspace "10" output $rightmon
