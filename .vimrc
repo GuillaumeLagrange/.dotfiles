@@ -8,9 +8,6 @@ Plug 'dracula/vim'
 Plug 'embear/vim-localvimrc'
 Plug 'tomasr/molokai'
 Plug 'godlygeek/tabular'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'rhysd/vim-clang-format'
 Plug 'tpope/vim-fugitive'
 Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'sheerun/vim-polyglot'
@@ -21,7 +18,6 @@ Plug 'bronson/vim-trailing-whitespace'
 Plug 'majutsushi/tagbar'
 Plug 'w0rp/ale'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'zchee/deoplete-clang'
 Plug 'tpope/vim-unimpaired'
 " Install fzf in .fzf
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -142,13 +138,19 @@ let g:ale_linters = {
 
 " (optional, for completion performance) run linters only when I save files
 let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_enter = 1
+let g:ale_lint_on_enter = 0
+
+" Refresh buffers
+nnoremap <F5>  :checktime<CR>
 
 " Tagbar
-nnoremap <F5>  :TagbarToggle<CR>
+nnoremap <F6>  :checktime<CR>
 
 " Gitlab plugin for fugitive
 let g:fugitive_gitlab_domains = ['https://gitlab.corp.netatmo.com']
+
+" Tag generation
+command! MakeTags !ctags -R .
 
 " fzf settings
 " Customize fzf colors to match your color scheme
@@ -180,6 +182,3 @@ command! -bang -nargs=* GGrep
   \ call fzf#vim#grep(
   \   'git grep --line-number '.shellescape(<q-args>), 0,
   \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] }, <bang>0)
-
-" Tag generation
-command! MakeTags !ctags -R .
