@@ -240,3 +240,6 @@ exec --no-startup-id blueman-applet
 exec --no-startup-id pasystray
 # Dropbox
 exec --no-startup-id dropbox start
+
+assign [class="Thunderbird"] 6
+for_window [class="Spotify"] move to workspace 10

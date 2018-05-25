@@ -9,6 +9,9 @@
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="gnzh"
 
+SECRET="1440d4e7b0b742aaa7d2c81f2b11d0d4"
+NETATMO_PROJECT="nmr"
+
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -73,8 +76,11 @@ export EDITOR="$VISUAL"
 alias vi="nvim"
 alias vim="nvim"
 alias dualscreen="xrandr --output HDMI1 --auto --above eDP1"
-alias ma='make PFX=nmr all reflash TOOLS_DIR=/home/glagrange/embedded-tools SECRET=bbc0aecb52ff5a7ec496aa10369bc3b1'
-alias mca='make PFX=nmr clean all reflash TOOLS_DIR=/home/glagrange/embedded-tools SECRET=bbc0aecb52ff5a7ec496aa10369bc3b1'
+alias mc='make PFX=$NETATMO_PROJECT clean'
+alias mar='make PFX=$NETATMO_PROJECT all reflash TOOLS_DIR=/home/glagrange/embedded-tools SECRET=$SECRET'
+alias ma='make PFX=$NETATMO_PROJECT all TOOLS_DIR=/home/glagrange/embedded-tools SECRET=$SECRET'
+alias mcar='make PFX=$NETATMO_PROJECT clean all reflash TOOLS_DIR=/home/glagrange/embedded-tools SECRET=$SECRET'
+alias mhr='make PFX=$NETATMO_PROJECT all reflash TOOLS_DIR=/home/glagrange/embedded-tools SECRET=$SECRET FIRMWARE_VERSION=19'
 alias generate-tags='ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .'
 
 # You may need to manually set your language environment
