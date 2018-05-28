@@ -144,7 +144,7 @@ let g:ale_lint_on_enter = 0
 nnoremap <F5>  :checktime<CR>
 
 " Tagbar
-nnoremap <F6>  :checktime<CR>
+nnoremap <F6>  :Tagbar<CR>
 
 " Gitlab plugin for fugitive
 let g:fugitive_gitlab_domains = ['https://gitlab.corp.netatmo.com']
