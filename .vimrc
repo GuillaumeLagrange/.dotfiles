@@ -7,7 +7,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'dracula/vim'
 Plug 'embear/vim-localvimrc'
 Plug 'tomasr/molokai'
-Plug 'godlygeek/tabular'
+Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-fugitive'
 Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'sheerun/vim-polyglot'
@@ -26,7 +26,7 @@ call plug#end()
 
 syntax on
 filetype plugin indent on
-set number
+set relativenumber
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
@@ -183,7 +183,9 @@ command! -bang -nargs=* GGrep
   \   'git grep --line-number '.shellescape(<q-args>), 0,
   \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] }, <bang>0)
 
-" Tabular
-" \S\+ is for one or more non whitespace character
-nnoremap <leader>a<space> :Tabularize /\S\+;<CR>
-vnoremap <leader>a<space> :Tabularize /\S\+;<CR>
+
+" Easy align
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap <leader>a <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap <leader>a <Plug>(EasyAlign)
