@@ -229,7 +229,7 @@ bindsym $mod+Escape mode "$mode_system"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status
+        status_command i3status | ~/i3spotifystatus/pystatus.py
         tray_output primary
         position top
 }
@@ -249,7 +249,9 @@ exec --no-startup-id pasystray
 # Dropbox
 exec --no-startup-id dropbox start
 
+# Workspace assignment
 assign [class="Thunderbird"] 6
+# Spotify is bugged, for_window directive is mandatory...
 for_window [class="Spotify"] move to workspace 10
 
 # Assign workspaces to monitors
