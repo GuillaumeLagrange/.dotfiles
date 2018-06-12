@@ -9,8 +9,7 @@
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="gnzh"
 
-SECRET="1440d4e7b0b742aaa7d2c81f2b11d0d4"
-NETATMO_PROJECT="nmr"
+source ~/.secret_netatmo_zshrc
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"

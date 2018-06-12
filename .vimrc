@@ -55,9 +55,9 @@ set path+=**
 " Align on open parentheresis for indentation of multi-line statements
 set cinoptions=(0
 
-" Lifesaving
-nnoremap ; :
-vnoremap ; :
+" Diff mappings put/get then move to next change
+nnoremap <leader>g :diffget<CR>]c
+nnoremap <leader>p :diffput<CR>]c
 
 " Arrow keys
 noremap <Down> gj
@@ -141,17 +141,18 @@ let g:ale_linters = {
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_enter = 0
 
+" Tag generation
+command! MakeTags !ctags -R .
+nnoremap <F4> :MakeTags<CR>
+
 " Refresh buffers
-nnoremap <F5>  :checktime<CR>
+nnoremap <F5> :checktime<CR>
 
 " Tagbar
-nnoremap <F6>  :Tagbar<CR>
+nnoremap <F6> :Tagbar<CR>
 
 " Gitlab plugin for fugitive
 let g:fugitive_gitlab_domains = ['https://gitlab.corp.netatmo.com']
-
-" Tag generation
-command! MakeTags !ctags -R .
 
 " fzf settings
 " Customize fzf colors to match your color scheme
