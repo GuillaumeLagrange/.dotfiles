@@ -52,13 +52,19 @@ set colorcolumn=100
 set mouse=a
 set guicursor=
 " Allow reccursive search on path
-set path+=**
+" set path+=**
 " Align on open parentheresis for indentation of multi-line statements
 set cinoptions=(0
 
 " Diff mappings put/get then move to next change
-nnoremap <leader>g :diffget<CR>]c
-nnoremap <leader>p :diffput<CR>]c
+nnoremap <leader>dg :diffget<CR>]c
+nnoremap <leader>dp :diffput<CR>]c
+
+" Disable visual mode
+nnoremap Q <Nop>
+
+" Disable highlight
+nnoremap <leader><Space> :noh<CR>
 
 " Arrow keys
 noremap <Down> gj
@@ -127,14 +133,15 @@ autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 
 " Deoplete
-let g:deoplete#enable_at_startup = 1
-" let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libclang.so.1'
-" let g:deoplete#sources#clang#clang_header = '/usr/lib/llvm-3.8/lib/clang'
-" " tab completion
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" let g:deoplete#enable_at_startup = 1
+" " let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libclang.so.1'
+" " let g:deoplete#sources#clang#clang_header = '/usr/lib/llvm-3.8/lib/clang'
+" "tab completion
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " disable preview window
 set completeopt-=preview
+set completeopt=longest,menuone
 
 " ALE
 let g:ale_linters = {
@@ -146,7 +153,7 @@ let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_enter = 0
 
 " Tag generation
-command! MakeTags !ctags -R .
+command! MakeTags !ctags -R -n --fields=+i+K+S+l+m+a --exclude=app.S
 nnoremap <F4> :MakeTags<CR>
 
 " Refresh buffers
@@ -198,3 +205,17 @@ nmap <leader>a <Plug>(EasyAlign)
 " Git gutter
 nmap <Leader>ha <Plug>GitGutterStageHunk
 nmap <Leader>hv <Plug>GitGutterPreviewHunk
+
+" Fugitive
+nmap <leader>gw :Gwrite<CR>
+nmap <leader>gr :Gread<CR>
+nmap <leader>gca :Gcommit -v --amend<CR>
+nmap <leader>gc :Gcommit -v<CR>
+nmap <leader>gs :Gstatus<CR>
+
+command! -bang FLines call fzf#vim#grep(
+     \ 'grep -vnITr --color=always --exclude-dir=".svn" --exclude-dir=".git" --exclude=tags --exclude=*\.pyc --exclude=*\.exe --exclude=*\.dll --exclude=*\.zip --exclude=*\.gz --exclude=*\.S --exclude=*\.map "^$"',
+     \ 0,
+     \ {'options': '--reverse --prompt "FLines> "'})
+nnoremap <silent> <leader>e :FLines<cr>
+
