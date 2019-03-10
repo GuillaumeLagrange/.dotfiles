@@ -9,8 +9,6 @@
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="gnzh"
 
-source ~/.secret_netatmo_zshrc
-
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -74,6 +72,7 @@ export VISUAL=nvim
 export EDITOR="$VISUAL"
 alias vi="nvim"
 alias vim="nvim"
+alias cat="bat"
 alias dualscreen="xrandr --output HDMI1 --auto --above eDP1"
 alias mc='make PFX=$NETATMO_PROJECT clean'
 alias mar='make PFX=$NETATMO_PROJECT all reflash TOOLS_DIR=/home/glagrange/embedded-tools SECRET=$SECRET'
