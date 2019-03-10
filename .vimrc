@@ -18,16 +18,17 @@ Plug 'suan/vim-instant-markdown'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'majutsushi/tagbar'
 Plug 'w0rp/ale'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'tpope/vim-unimpaired'
 " Install fzf in .fzf
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'vimwiki/vimwiki'
 call plug#end()
 
 syntax on
 filetype plugin indent on
-set relativenumber
+set number
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
@@ -67,6 +68,9 @@ noremap <Up> gk
 nnoremap j gj
 nnoremap k gk
 
+nnoremap ; :
+vnoremap ; :
+
 " Window splitting remap"
 nnoremap <C-h> <C-w>h
 nnoremap <C-k> <C-w>k
@@ -100,9 +104,9 @@ endfunc
 nnoremap <C-n> :call NumberToggle()<cr>
 
 " Theme
-if (has("termguicolors"))
-  set termguicolors
-endif
+" if (has("termguicolors"))
+  " set termguicolors
+" endif
 colorscheme molokai
 
 " NERD Tree mappings
