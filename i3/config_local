@@ -1,0 +1,2 @@
+# thunderbird
+bindsym $mod+m exec thunderbird-beta
