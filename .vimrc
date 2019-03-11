@@ -1,29 +1,26 @@
 call plug#begin('~/.vim/plugged')
+
 Plug 'jiangmiao/auto-pairs'
-Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-repeat'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'dracula/vim'
-Plug 'embear/vim-localvimrc'
 Plug 'tomasr/molokai'
 Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-fugitive'
-Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
 Plug 'airblade/vim-gitgutter'
 Plug 'suan/vim-instant-markdown'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'majutsushi/tagbar'
-Plug 'w0rp/ale'
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'tpope/vim-unimpaired'
+Plug 'christoomey/vim-tmux-navigator'
+
 " Install fzf in .fzf
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'vimwiki/vimwiki'
+
 call plug#end()
 
 syntax on
@@ -52,7 +49,7 @@ set colorcolumn=100
 set mouse=a
 set guicursor=
 " Allow reccursive search on path
-" set path+=**
+set path+=**
 " Align on open parentheresis for indentation of multi-line statements
 set cinoptions=(0
 
@@ -110,9 +107,6 @@ endfunc
 nnoremap <C-n> :call NumberToggle()<cr>
 
 " Theme
-" if (has("termguicolors"))
-  " set termguicolors
-" endif
 colorscheme molokai
 
 " NERD Tree mappings
@@ -131,26 +125,6 @@ let g:NERDSpaceDelims = 1
 " map to <Leader>cf in C++ code
 autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
-
-" Deoplete
-" let g:deoplete#enable_at_startup = 1
-" " let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libclang.so.1'
-" " let g:deoplete#sources#clang#clang_header = '/usr/lib/llvm-3.8/lib/clang'
-" "tab completion
-" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-" disable preview window
-set completeopt-=preview
-set completeopt=longest,menuone
-
-" ALE
-let g:ale_linters = {
-            \   'c': ['clangtidy'],
-            \}
-
-" (optional, for completion performance) run linters only when I save files
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_enter = 0
 
 " Tag generation
 command! MakeTags !ctags -R -n --fields=+i+K+S+l+m+a --exclude=app.S
@@ -189,12 +163,6 @@ let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-s': 'split',
   \ 'ctrl-v': 'vsplit' }
-" Command for git grep
-" - fzf#vim#grep(command, with_column, [options], [fullscreen])
-command! -bang -nargs=* GGrep
-  \ call fzf#vim#grep(
-  \   'git grep --line-number '.shellescape(<q-args>), 0,
-  \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] }, <bang>0)
 
 " Easy align
 " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -212,10 +180,14 @@ nmap <leader>gr :Gread<CR>
 nmap <leader>gca :Gcommit -v --amend<CR>
 nmap <leader>gc :Gcommit -v<CR>
 nmap <leader>gs :Gstatus<CR>
+nmap <leader>gd :Gdiff<CR>
 
 command! -bang FLines call fzf#vim#grep(
-     \ 'grep -vnITr --color=always --exclude-dir=".svn" --exclude-dir=".git" --exclude=tags --exclude=*\.pyc --exclude=*\.exe --exclude=*\.dll --exclude=*\.zip --exclude=*\.gz --exclude=*\.S --exclude=*\.map "^$"',
+     \ 'rg -vnITr --color=always --exclude-dir=".svn" --exclude-dir=".git" --exclude=tags --exclude=*\.pyc --exclude=*\.exe --exclude=*\.dll --exclude=*\.zip --exclude=*\.gz --exclude=*\.S --exclude=*\.map "^$"',
      \ 0,
      \ {'options': '--reverse --prompt "FLines> "'})
 nnoremap <silent> <leader>e :FLines<cr>
 
+if filereadable(expand("~/.vimrc_local"))
+  source ~/.vimrc_local
+endif
