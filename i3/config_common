@@ -235,8 +235,6 @@ bar {
 
 # NetworkManager applet
 exec --no-startup-id nm-applet
-# Disable screensave when fullscreen
-exec_always --no-startup-id python3 ~/scripts/disable-standby-fs.py
 # Redshift
 exec --no-startup-id redshift-gtk
 # Bluetooth applet
@@ -245,6 +243,8 @@ exec --no-startup-id blueman-applet
 exec --no-startup-id pasystray
 # Dropbox
 exec --no-startup-id dropbox start
+# Keepassxc
+exec --no-startup-id keepassxc
 
 # Workspace assignment
 assign [class="Thunderbird"] 6
