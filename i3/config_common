@@ -103,6 +103,13 @@ bindsym $mod+a focus child
 # move workspace to other screen vertically
 bindsym $mod+x move workspace to output right
 
+# scratchpad
+bindsym $mod+Shift+p move scratchpad
+bindsym $mod+p scratchpad show
+
+# urgent workspace
+bindsym $mod+Tab [urgent=latest] focus
+
 # azerty
 ## switch to workspace
 #bindsym $mod+ampersand workspace 1

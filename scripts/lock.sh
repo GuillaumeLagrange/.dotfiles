@@ -9,7 +9,7 @@ if [ "$(pidof spotify)" ]; then
 fi
 
 # Lock computer
-i3lock -c 020202
+i3lock -c 202020 -n
 
 # Play spotify if it was previously playing
 if [ $status = 1 ]; then
