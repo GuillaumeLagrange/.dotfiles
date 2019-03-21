@@ -32,7 +32,7 @@ set shiftwidth=2
 set expandtab
 set smarttab
 set encoding=utf-8
-set scrolloff=0
+set scrolloff=3
 set autoindent
 set showmode
 set showcmd
@@ -127,7 +127,7 @@ autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 
 " Tag generation
-command! MakeTags !ctags -R -n --fields=+i+K+S+l+m+a --exclude=app.S
+command! MakeTags !ctags -R -n --fields=+i+K+S+l+m+a --exclude=app.S --exclude=aps.c
 nnoremap <F4> :MakeTags<CR>
 
 " Refresh buffers
@@ -155,10 +155,12 @@ let g:fzf_colors =
   \ 'marker':  ['fg', 'Keyword'],
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
-nnoremap <leader>f :Files<CR>
+nnoremap <leader>f :GFiles<CR>
 nnoremap <leader>h :Files ~<CR>
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>t :Tags<CR>
+nnoremap <leader>e :Ag <C-R><C-W><CR>
+nnoremap <leader>r :Ag<CR>
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-s': 'split',
@@ -181,12 +183,6 @@ nmap <leader>gca :Gcommit -v --amend<CR>
 nmap <leader>gc :Gcommit -v<CR>
 nmap <leader>gs :Gstatus<CR>
 nmap <leader>gd :Gdiff<CR>
-
-command! -bang FLines call fzf#vim#grep(
-     \ 'rg -vnITr --color=always --exclude-dir=".svn" --exclude-dir=".git" --exclude=tags --exclude=*\.pyc --exclude=*\.exe --exclude=*\.dll --exclude=*\.zip --exclude=*\.gz --exclude=*\.S --exclude=*\.map "^$"',
-     \ 0,
-     \ {'options': '--reverse --prompt "FLines> "'})
-nnoremap <silent> <leader>e :FLines<cr>
 
 if filereadable(expand("~/.vimrc_local"))
   source ~/.vimrc_local
