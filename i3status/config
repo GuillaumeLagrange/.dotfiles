@@ -8,7 +8,7 @@
 
 general {
         colors = true
-        interval = 5
+        interval = 1
 }
 
 #order += "ipv6"
@@ -36,7 +36,7 @@ ethernet _first_ {
 }
 
 battery 0 {
-        format = "%status %percentage %remaining %emptytime"
+        format = "%status %percentage %remaining"
         format_down = "No battery"
         status_chr = "CHR"
         status_bat = "BAT"
@@ -76,6 +76,6 @@ disk "/home" {
 
 volume master {
         format = "♪: %volume"
-        device = "pulse:0"
+        device = "pulse"
         format_muted = "♪: muted (%volume)"
 }
