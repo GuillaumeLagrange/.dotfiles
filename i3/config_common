@@ -11,8 +11,8 @@
 
 set $mod Mod4
 
-set $leftmon HDMI1
-set $rightmon VGA1
+set $leftmon HDMI-1
+set $rightmon VGA-1
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -172,8 +172,8 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #i
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
 # Spotify play/pause next/previous
-bindsym XF86AudioPause exec --no-startup-id dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
-bindsym XF86AudioPlay exec --no-startup-id dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
+bindsym XF86AudioPause exec --no-startup-id sh ~/scripts/play_pause.sh
+bindsym XF86AudioPlay exec --no-startup-id sh ~/scripts/play_pause.sh
 bindsym XF86AudioNext exec --no-startup-id dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
 bindsym XF86AudioPrev exec --no-startup-id dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
 
@@ -254,7 +254,7 @@ exec --no-startup-id dropbox start
 exec --no-startup-id keepassxc
 
 # Workspace assignment
-assign [class="Thunderbird"] 6
+assign [class="Thunderbird"] 10
 # Spotify is bugged, for_window directive is mandatory...
 for_window [class="Spotify"] move to workspace 10
 
