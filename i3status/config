@@ -76,6 +76,6 @@ disk "/home" {
 
 volume master {
         format = "♪: %volume"
-        device = "pulse"
+        device = "default"
         format_muted = "♪: muted (%volume)"
 }
