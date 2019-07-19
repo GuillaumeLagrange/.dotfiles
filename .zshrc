@@ -2,7 +2,7 @@
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-  export ZSH=~/.oh-my-zsh
+export ZSH=~/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -63,23 +63,21 @@ source $ZSH/oh-my-zsh.sh
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
+export PATH=~/.local/bin:$PATH
 export PATH=~/scripts:$PATH
+export PATH=~/scripts/local:$PATH
 export PATH=~/i3lock-fancy:$PATH
-export PATH=~/embedded-tools/Linux/flasher:$PATH
 export PATH=~/embedded-tools/generic-embedded/stm32_dfu:$PATH
 # export PATH=/opt/gcc-arm-none-eabi-5_4-2016q3/bin:$PATH
 export VISUAL=nvim
 export EDITOR="$VISUAL"
+
 alias vi="nvim"
 alias vim="nvim"
 alias cat="bat"
 alias dualscreen="xrandr --output HDMI1 --auto --above eDP1"
-alias mc='make PFX=$NETATMO_PROJECT clean'
-alias mar='make PFX=$NETATMO_PROJECT all reflash TOOLS_DIR=/home/glagrange/embedded-tools SECRET=$SECRET'
-alias ma='make PFX=$NETATMO_PROJECT all TOOLS_DIR=/home/glagrange/embedded-tools SECRET=$SECRET'
-alias mcar='make PFX=$NETATMO_PROJECT clean all reflash TOOLS_DIR=/home/glagrange/embedded-tools SECRET=$SECRET'
-alias mhr='make PFX=$NETATMO_PROJECT all reflash TOOLS_DIR=/home/glagrange/embedded-tools SECRET=$SECRET FIRMWARE_VERSION=19'
 alias generate-tags='ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .'
+alias grst='git reset'
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
