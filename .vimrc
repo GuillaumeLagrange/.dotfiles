@@ -1,13 +1,13 @@
 call plug#begin('~/.vim/plugged')
 
 Plug 'jiangmiao/auto-pairs'
+" tpope is a god
+Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
-Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-commentary'
 Plug 'tomasr/molokai'
 Plug 'junegunn/vim-easy-align'
-Plug 'tpope/vim-fugitive'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
@@ -52,6 +52,8 @@ set guicursor=
 set path+=**
 " Align on open parentheresis for indentation of multi-line statements
 set cinoptions=(0
+set completeopt=longest,menuone
+set listchars=tab:→\ ,trail:·
 
 " Diff mappings put/get then move to next change
 nnoremap <leader>dg :diffget<CR>]c
@@ -88,13 +90,8 @@ let g:airline_powerline_fonts = 1
 let g:airline_theme='molokai'
 let g:airline#extensions#tabline#enabled = 1
 
-" NERD Tree settings
-let NERDTreeMinimalUI=1
-" Have NERD Tree open when no file specified
-" autocmd StdinReadPre * let s:std_in=1
-" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-" Vim close if onle NERD tree opened
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" // comments for C
+autocmd FileType c,cpp,cs,java setlocal commentstring=//\ %s
 
 " Relative number toggle
 function! NumberToggle()
@@ -127,7 +124,7 @@ autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 
 " Tag generation
-command! MakeTags !ctags -R -n --fields=+i+K+S+l+m+a --exclude=app.S --exclude=aps.c
+command! MakeTags !ctags -R -n --fields=+i+K+S+l+m+a --exclude="*.S" --exclude=aps.c --exclude=nwk.c
 nnoremap <F4> :MakeTags<CR>
 
 " Refresh buffers
@@ -156,15 +153,22 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
 nnoremap <leader>f :GFiles<CR>
+nnoremap <leader>F :Files<CR>
 nnoremap <leader>h :Files ~<CR>
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>t :Tags<CR>
-nnoremap <leader>e :Ag <C-R><C-W><CR>
-nnoremap <leader>r :Ag<CR>
+nnoremap <leader>e :Rg <C-R><C-W><CR>
+nnoremap <leader>r :Rg <CR>
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-s': 'split',
   \ 'ctrl-v': 'vsplit' }
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(<q-args>,
+  \                 '-g'
+  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \                 <bang>0)
 
 " Easy align
 " Start interactive EasyAlign in visual mode (e.g. vipga)
