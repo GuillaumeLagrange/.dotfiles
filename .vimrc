@@ -7,12 +7,12 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-commentary'
 Plug 'tomasr/molokai'
+Plug 'morhetz/gruvbox'
 Plug 'junegunn/vim-easy-align'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'airblade/vim-gitgutter'
-Plug 'suan/vim-instant-markdown'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'majutsushi/tagbar'
 Plug 'christoomey/vim-tmux-navigator'
@@ -26,7 +26,7 @@ call plug#end()
 syntax on
 filetype plugin indent on
 set number
-set tabstop=2
+set tabstop=8
 set softtabstop=2
 set shiftwidth=2
 set expandtab
@@ -104,7 +104,9 @@ endfunc
 nnoremap <C-n> :call NumberToggle()<cr>
 
 " Theme
-colorscheme molokai
+colorscheme gruvbox
+let g:gruvbox_termcolors = 256
+let g:gruvbox_contrast_dark = 'hard'
 
 " NERD Tree mappings
 nnoremap <leader>d :NERDTreeToggle<CR> :winc =<CR>
