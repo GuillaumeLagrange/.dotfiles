@@ -181,10 +181,8 @@ bindsym XF86AudioPrev exec --no-startup-id dbus-send --print-reply --dest=org.mp
 bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
 
-# Multi-screen screenshots with scrot
-bindsym --release Print exec gnome-screenshot
-# OSX-like area selection screenshots
-bindsym --release Shift+Print exec gnome-screenshot -a
+bindsym Print exec "scrot /tmp/screenshot-$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'"
+bindsym Shift+Print --release exec "scrot -s /tmp/screenshot-$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
