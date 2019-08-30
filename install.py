@@ -76,10 +76,10 @@ def main():
         os.symlink(os.path.join(dotfiles_dir, link), os.path.join(home_dir, link))
 
     # Download vim plug
-    subprocess.call("curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-                    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim")
+    subprocess.call(["curl", "-fLo", "~/.vim/autoload/plug.vim:", "--create-dirs",
+                     "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"])
     # Install vim plugins
-    subprocess.call("nvim +PlugClean +PlugUpdate +qa")
+    subprocess.call(["nvim", "+PlugClean", "+PlugUpdate", "+qa"])
 
 
 if __name__ == "__main__":
