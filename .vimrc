@@ -210,6 +210,7 @@ nnoremap <F1> :call LanguageClient_contextMenu()<CR>
 let g:LanguageClient_serverCommands = {
     \ 'c': ['~/tools/ccls/Release/ccls', '--log-file=/tmp/cc.log'],
     \ 'cpp': ['~/tools/ccls/Release/ccls', '--log-file=/tmp/cc.log'],
+    \ 'python': ['/usr/local/bin/pyls'],
     \ }
 " no diagnostic from LSP
 let g:LanguageClient_diagnosticsEnable = 0
