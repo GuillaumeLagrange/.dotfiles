@@ -16,7 +16,9 @@ Plug 'airblade/vim-gitgutter'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'majutsushi/tagbar'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+if has('nvim')
+  Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+endif
 
 " Language server
 Plug 'autozimu/LanguageClient-neovim', {
@@ -204,7 +206,7 @@ nmap <leader>p <Plug>MarkdownPreviewToggle
 
 " LanguageClient and completion
 let g:deoplete#enable_at_startup = 1
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+nnoremap <F1> :call LanguageClient_contextMenu()<CR>
 let g:LanguageClient_serverCommands = {
     \ 'c': ['~/tools/ccls/Release/ccls', '--log-file=/tmp/cc.log'],
     \ 'cpp': ['~/tools/ccls/Release/ccls', '--log-file=/tmp/cc.log'],
