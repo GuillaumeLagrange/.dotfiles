@@ -250,6 +250,8 @@ exec --no-startup-id pasystray
 exec --no-startup-id dropbox start
 # Keepassxc
 exec --no-startup-id keepassxc
+# Load Xressources for urxvt
+exec --no-startup-id xrdb ~/.Xressources
 
 # Workspace assignment
 assign [class="Thunderbird"] 10
