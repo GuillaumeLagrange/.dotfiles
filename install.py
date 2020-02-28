@@ -18,6 +18,9 @@ _REQUIRED_SOFTWARE = [
     "nvim",
     "zsh",
     "urxvt",
+    "curl",
+    "make",
+    "git",
 ]
 
 _SYMBOLIC_LINKS = [
@@ -54,6 +57,15 @@ def main():
             print(name + "is not in the PATH")
             return 1
 
+    # Install oh-my-zsh if needed
+    if not os.path.isfile(os.path.join(home_dir, ".oh-my-zsh")):
+        print("Installing oh-my-zsh")
+        subprocess.call('sh -c \
+                "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"',
+                shell=True)
+
+    return 0
+
     # Generate i3 config file (no source, so common and local files have to be cat)
     try:
         os.mkdir(os.path.join(home_dir, ".config"))
@@ -65,8 +77,13 @@ def main():
     with open(os.path.join(home_dir, ".config", "i3", "config"), 'w') as fp:
         with open(os.path.join(i3_dir, "config_common"), 'r') as config_common:
             fp.write(config_common.read())
-        with open(os.path.join(i3_dir, "config_local"), 'r') as config_local:
-            fp.write(config_local.read())
+        try:
+            with open(os.path.join(i3_dir, "config_local"), 'r') as config_local:
+                fp.write(config_local.read())
+        except:
+            pass
+
+    return
 
     # Create symbolic links
     for link in _SYMBOLIC_LINKS:
