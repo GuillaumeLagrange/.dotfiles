@@ -117,8 +117,11 @@ nnoremap <C-n> :call NumberToggle()<cr>
 
 " Theme
 colorscheme gruvbox
+set background=dark
 let g:gruvbox_termcolors = 256
 let g:gruvbox_contrast_dark = 'hard'
+" Transarency
+hi Normal guibg=NONE ctermbg=NONE
 
 " NERD Tree mappings
 nnoremap <leader>d :NERDTreeToggle<CR> :winc =<CR>
@@ -208,8 +211,8 @@ nmap <leader>p <Plug>MarkdownPreviewToggle
 let g:deoplete#enable_at_startup = 1
 nnoremap <F1> :call LanguageClient_contextMenu()<CR>
 let g:LanguageClient_serverCommands = {
-    \ 'c': ['~/tools/ccls/Release/ccls', '--log-file=/tmp/cc.log'],
-    \ 'cpp': ['~/tools/ccls/Release/ccls', '--log-file=/tmp/cc.log'],
+    \ 'c': ['/usr/bin/clangd-9', '--log-file=/tmp/cc.log'],
+    \ 'cpp': ['/usr/bin/clangd-9', '--log-file=/tmp/cc.log'],
     \ 'python': ['/usr/local/bin/pyls'],
     \ }
 " no diagnostic from LSP

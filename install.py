@@ -21,6 +21,8 @@ _REQUIRED_SOFTWARE = [
     "curl",
     "make",
     "git",
+    "arandr",
+    "nitrogen",
 ]
 
 _SYMBOLIC_LINKS = [
@@ -33,12 +35,10 @@ _SYMBOLIC_LINKS = [
     ".Xressources",
 ]
 
-
 def is_installed(name):
     """Check whether `name` is on PATH and marked as executable."""
 
     return which(name) is not None
-
 
 def main():
     # Arguments parser
@@ -58,13 +58,12 @@ def main():
             return 1
 
     # Install oh-my-zsh if needed
-    if not os.path.isfile(os.path.join(home_dir, ".oh-my-zsh")):
+    if not os.path.isdir(os.path.join(home_dir, ".oh-my-zsh")):
         print("Installing oh-my-zsh")
         subprocess.call('sh -c \
                 "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"',
                 shell=True)
 
-    return 0
 
     # Generate i3 config file (no source, so common and local files have to be cat)
     try:
@@ -83,20 +82,21 @@ def main():
         except:
             pass
 
-    return
-
     # Create symbolic links
     for link in _SYMBOLIC_LINKS:
         # Remove old link or file
         subprocess.call(["rm", "-rf", os.path.join(home_dir, link)])
         # Create symlink
         os.symlink(os.path.join(dotfiles_dir, link), os.path.join(home_dir, link))
+        print(os.path.join(dotfiles_dir, link))
+        print(os.path.join(home_dir, link))
 
-    # Download vim plug
-    subprocess.call(["curl", "-fLo", "~/.vim/autoload/plug.vim:", "--create-dirs",
-                     "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"])
+    # Download vim plug if needed
+    subprocess.call("curl -fLo ~/.vim/autoload/plug.vim: --create-dirs \
+                     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim", shell=True)
+
     # Install vim plugins
-    subprocess.call(["nvim", "+PlugClean", "+PlugUpdate", "+qa"])
+    subprocess.call("nvim +PlugClean +PlugUpdate +qa", shell=True)
 
 
 if __name__ == "__main__":

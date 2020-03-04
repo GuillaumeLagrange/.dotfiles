@@ -67,7 +67,7 @@ export PATH=~/.local/bin:$PATH
 export PATH=~/scripts:$PATH
 export PATH=~/scripts/local:$PATH
 export PATH=~/i3lock-fancy:$PATH
-export PATH=~/embedded-tools/generic-embedded/stm32_dfu:$PATH
+export PATH=~/.cargo/bin:$PATH
 # export PATH=/opt/gcc-arm-none-eabi-5_4-2016q3/bin:$PATH
 export VISUAL=nvim
 export EDITOR="$VISUAL"
@@ -121,4 +121,4 @@ man() {
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-source ~/.zshrc_local
+[ -f ~/.zshrc_local ]  && source ~/.zshrc_local

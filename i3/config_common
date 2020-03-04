@@ -12,7 +12,8 @@
 set $mod Mod4
 
 set $leftmon HDMI-1
-set $rightmon VGA-1
+set $rightmon DP-1
+set $laptopmon eDP-1
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -231,7 +232,7 @@ bindsym $mod+Escape mode "$mode_system"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status | ~/tools/i3spotifystatus/pystatus.py
+        status_command i3status
         tray_output primary
         position top
 }
@@ -252,6 +253,8 @@ exec --no-startup-id dropbox start
 exec --no-startup-id keepassxc
 # Load Xressources for urxvt
 exec --no-startup-id xrdb ~/.Xressources
+# Keyboard layout
+exec_always setxkbmap us_qwerty-fr && xmodmap ~/.Xmodmap
 
 # Workspace assignment
 assign [class="Thunderbird"] 10
@@ -269,4 +272,4 @@ workspace "2" output $rightmon
 workspace "4" output $rightmon
 workspace "6" output $rightmon
 workspace "8" output $rightmon
-workspace "10" output $rightmon
+workspace "10" output $laptopmon
