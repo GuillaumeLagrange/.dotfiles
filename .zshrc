@@ -55,6 +55,8 @@ plugins=(
     git
     archlinux
     npm
+    docker
+    docker-compose
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -78,6 +80,7 @@ alias cat="bat"
 alias dualscreen="xrandr --output HDMI1 --auto --above eDP1"
 alias generate-tags='ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .'
 alias grst='git reset'
+alias gfu='gc --fixup'
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -122,3 +125,9 @@ man() {
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 [ -f ~/.zshrc_local ]  && source ~/.zshrc_local
+
+PATH="/home/glagrange/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/home/glagrange/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/glagrange/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/glagrange/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/glagrange/perl5"; export PERL_MM_OPT;

@@ -20,13 +20,9 @@ if has('nvim')
   Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 endif
 
-" Language server
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+" Completion
 if has('nvim')
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'  }
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
 
 " Install fzf in .fzf
@@ -132,6 +128,9 @@ map <leader>q :bp<bar>sp<bar>bn<bar>bd<CR>
 nnoremap <PageUp> :bp<Enter>
 nnoremap <PageDown> :bn<Enter>
 
+" Quick access to vimrc
+nnoremap <F12> :e ~/.vimrc<CR>
+
 " Space between comment and delimiters
 let g:NERDSpaceDelims = 1
 
@@ -141,7 +140,7 @@ autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 
 " Tag generation
-command! MakeTags !ctags -R -n --fields=+i+K+S+l+m+a --exclude="*.S" --exclude=aps.c --exclude=nwk.c
+command! MakeTags !ctags -R -n --fields=+i+K+S+l+m+a --extra=+q --c++-kinds=+p+l --exclude="*.S" --exclude=aps.c --exclude=nwk.c --exclude="*python/*"
 nnoremap <F4> :MakeTags<CR>
 
 " Refresh buffers
@@ -194,34 +193,34 @@ xmap <leader>a <Plug>(EasyAlign)
 nmap <leader>a <Plug>(EasyAlign)
 
 " Git gutter
-nmap <Leader>ha <Plug>GitGutterStageHunk
-nmap <Leader>hv <Plug>GitGutterPreviewHunk
+nmap <Leader>ha <Plug>(GitGutterStageHunk)
+nmap <Leader>hv <Plug>(GitGutterPreviewHunk)
 
 " Fugitive
 nmap <leader>gw :Gwrite<CR>
 nmap <leader>gr :Gread<CR>
-nmap <leader>gca :Gcommit -v --amend<CR>
 nmap <leader>gc :Gcommit -v<CR>
+nmap <leader>gC :Gcommit -v --amend<CR>
 nmap <leader>gs :Gstatus<CR>
 nmap <leader>gd :Gdiff<CR>
 
 nmap <leader>p <Plug>MarkdownPreviewToggle
 
 " LanguageClient and completion
-let g:deoplete#enable_at_startup = 1
-nnoremap <F1> :call LanguageClient_contextMenu()<CR>
-let g:LanguageClient_serverCommands = {
-    \ 'c': ['/usr/bin/clangd-9', '--log-file=/tmp/cc.log'],
-    \ 'cpp': ['/usr/bin/clangd-9', '--log-file=/tmp/cc.log'],
-    \ 'python': ['/usr/local/bin/pyls'],
-    \ }
-" no diagnostic from LSP
-let g:LanguageClient_diagnosticsEnable = 0
-let g:LanguageClient_loadSettings = 1 " Use an absolute configuration path if you want system-wide settings
-let g:LanguageClient_settingsPath = '~/.config/nvim/settings.json'
-let g:LanguageClient_completionPreferTextEdit = 1
-" Disable the candidates in Comment/String syntaxes.
-call deoplete#custom#source('_', 'disabled_syntaxes', ['Comment', 'String'])
+" let g:deoplete#enable_at_startup = 1
+" nnoremap <F1> :call LanguageClient_contextMenu()<CR>
+" let g:LanguageClient_serverCommands = {
+"     \ 'c': ['/usr/bin/clangd-9', '--log-file=/tmp/cc.log'],
+"     \ 'cpp': ['/usr/bin/clangd-9', '--log-file=/tmp/cc.log'],
+"     \ 'python': ['/usr/local/bin/pyls'],
+"     \ }
+" " no diagnostic from LSP
+" let g:LanguageClient_diagnosticsEnable = 0
+" let g:LanguageClient_loadSettings = 1 " Use an absolute configuration path if you want system-wide settings
+" let g:LanguageClient_settingsPath = '~/.config/nvim/settings.json'
+" let g:LanguageClient_completionPreferTextEdit = 1
+" " Disable the candidates in Comment/String syntaxes.
+" call deoplete#custom#source('_', 'disabled_syntaxes', ['Comment', 'String'])
 
 function SetLSPShortcuts()
   nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
