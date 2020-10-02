@@ -34,7 +34,8 @@ font pango:Inconsolatas Sans Mono 8
 floating_modifier $mod
 
 # Hide borders when window is alone in workspace (ubuntu LTS version too old...)
-hide_edge_borders both
+hide_edge_borders smart
+new_window 1pixel
 
 # start a terminal
 bindsym $mod+Return exec urxvt
@@ -43,7 +44,9 @@ bindsym $mod+Return exec urxvt
 bindsym $mod+Shift+a kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
+# bindsym $mod+d exec dmenu_run
+bindsym $mod+d exec rofi -show run
+bindsym $mod+Shift+d exec rofi -show window
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -102,8 +105,8 @@ bindsym $mod+q focus parent
 bindsym $mod+a focus child
 
 # move workspace to other screen
-bindsym $mod+x move workspace to output left
-bindsym $mod+Shift+x move workspace to output right
+bindsym $mod+x move workspace to output right
+bindsym $mod+Shift+x move workspace to output down
 
 # scratchpad
 bindsym $mod+Shift+p move scratchpad
@@ -178,6 +181,21 @@ bindsym XF86AudioPause exec --no-startup-id sh ~/scripts/play_pause.sh
 bindsym XF86AudioPlay exec --no-startup-id sh ~/scripts/play_pause.sh
 bindsym XF86AudioNext exec --no-startup-id dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
 bindsym XF86AudioPrev exec --no-startup-id dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
+
+# Media controls without media keys
+set $mode_sound Sound (Up) Volume up, (Down) Volume down, (m) Toggle mute, (p) play/pause
+mode "$mode_sound" {
+    bindsym Up exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% #increase sound volume
+    bindsym Down exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% #decrease sound volume
+    bindsym m exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle # mute sound
+    bindsym p exec --no-startup-id sh ~/scripts/play_pause.sh
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+shift+o mode "$mode_sound"
 
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
@@ -267,6 +285,8 @@ assign [class="Thunderbird"] 10
 for_window [class="Spotify"] move to workspace 10
 # Teams notification
 for_window [title="Microsoft Teams Notification"] floating enable
+# Make workspace 0 tabbed by default
+for_window [workspace="0"] layout tabbed
 
 # Assign workspaces to monitors
 workspace "1" output $leftmon

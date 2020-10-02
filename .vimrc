@@ -12,6 +12,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-abolish'
 Plug 'airblade/vim-gitgutter'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'majutsushi/tagbar'
@@ -62,6 +63,8 @@ set path+=**
 set cinoptions=(0
 set completeopt=longest,menuone
 set listchars=tab:→\ ,trail:·
+
+let mapleader = " "
 
 " Diff mappings put/get then move to next change
 nnoremap <leader>dg :diffget<CR>]c
