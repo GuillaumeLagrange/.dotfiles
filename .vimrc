@@ -9,7 +9,6 @@ Plug 'tpope/vim-commentary'
 Plug 'tomasr/molokai'
 Plug 'morhetz/gruvbox'
 Plug 'junegunn/vim-easy-align'
-Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-abolish'
@@ -17,13 +16,18 @@ Plug 'airblade/vim-gitgutter'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'majutsushi/tagbar'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'Yggdroot/indentLine'
+Plug 'babaybus/DoxygenToolkit.vim'
+Plug 'drmikehenry/vim-headerguard'
+Plug 'AndrewRadev/linediff.vim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'windwp/nvim-ts-autotag'
+
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/nvim-compe'
+
 if has('nvim')
   Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
-endif
-
-" Completion
-if has('nvim')
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
 
 " Install fzf in .fzf
@@ -100,6 +104,8 @@ nnoremap <leader>W :FixWhitespace<CR>
 let g:airline_powerline_fonts = 1
 let g:airline_theme='molokai'
 let g:airline#extensions#tabline#enabled = 1
+
+let g:indentLine_char = '┊'
 
 " // comments for C
 autocmd FileType c,cpp,cs,java setlocal commentstring=//\ %s
@@ -202,9 +208,9 @@ nmap <Leader>hv <Plug>(GitGutterPreviewHunk)
 " Fugitive
 nmap <leader>gw :Gwrite<CR>
 nmap <leader>gr :Gread<CR>
-nmap <leader>gc :Gcommit -v<CR>
-nmap <leader>gC :Gcommit -v --amend<CR>
-nmap <leader>gs :Gstatus<CR>
+nmap <leader>gc :Git commit -v<CR>
+nmap <leader>gC :Git commit -v --amend<CR>
+nmap <leader>gs :Git<CR>
 nmap <leader>gd :Gdiff<CR>
 
 nmap <leader>p <Plug>MarkdownPreviewToggle
@@ -243,6 +249,83 @@ augroup LSP
   autocmd FileType cpp,c call SetLSPShortcuts()
 augroup END
 
+function! g:HeaderguardName()
+  return join(["__", toupper(expand('%:t:gs/[^0-9a-zA-Z_]/_/g')), "__"], "")
+endfunction
+
 if filereadable(expand("~/.vimrc_local"))
   source ~/.vimrc_local
 endif
+
+lua << EOF
+
+require('lspconfig').pyright.setup{}
+require('lspconfig').tsserver.setup{}
+
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+end
+
+-- Compe
+vim.o.completeopt = "menuone,noselect"
+require'compe'.setup {
+  enabled = true;
+  autocomplete = true;
+  debug = false;
+  min_length = 1;
+  preselect = 'enable';
+  throttle_time = 80;
+  source_timeout = 200;
+  resolve_timeout = 800;
+  incomplete_delay = 400;
+  max_abbr_width = 100;
+  max_kind_width = 100;
+  max_menu_width = 100;
+  documentation = {
+    border = { '', '' ,'', ' ', '', '', '', ' ' }, -- the border option is the same as `|help nvim_open_win|`
+    winhighlight = "NormalFloat:CompeDocumentation,FloatBorder:CompeDocumentationBorder",
+    max_width = 120,
+    min_width = 60,
+    max_height = math.floor(vim.o.lines * 0.3),
+    min_height = 1,
+  };
+
+  source = {
+    path = true;
+    buffer = true;
+    calc = true;
+    nvim_lsp = true;
+    nvim_lua = true;
+    vsnip = true;
+    ultisnips = true;
+    luasnip = true;
+  };
+}
+
+require'nvim-treesitter.configs'.setup {
+  autotag = {
+    enable = true,
+    filetypes = { 'html', 'javascript', 'javascriptreact', 'typescriptreact', 'svelte', 'vue' }
+  }
+}
+
+EOF

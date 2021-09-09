@@ -53,7 +53,6 @@ ZSH_THEME="gnzh"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     git
-    gitfast
     archlinux
     npm
     docker
@@ -81,11 +80,16 @@ alias cat="bat"
 alias dualscreen="xrandr --output HDMI1 --auto --above eDP1"
 alias generate-tags='ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .'
 alias grst='git reset'
+alias grst1='git reset HEAD~1'
 alias gfu='gc --fixup'
 
 # fzf aliases
 # export FZF_DEFAULT_COMMAND='rg --files --hidden'
 alias gaf='git add $(git ls-files --modified --others --exclude-standard | fzf -m --height=40% --reverse)'
+alias gch='git checkout $(git name-rev HEAD --name-only)'
+
+zstyle ':completion:*:make:*:targets' call-command true
+zstyle ':completion:*:make:*' tag-order 'targets'
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8

@@ -285,8 +285,9 @@ assign [class="Thunderbird"] 10
 for_window [class="Spotify"] move to workspace 10
 # Teams notification
 for_window [title="Microsoft Teams Notification"] floating enable
-# Make workspace 0 tabbed by default
+# Make workspace 0 and 7 tabbed by default
 for_window [workspace="0"] layout tabbed
+for_window [workspace="7"] layout tabbed
 
 # Assign workspaces to monitors
 workspace "1" output $leftmon
