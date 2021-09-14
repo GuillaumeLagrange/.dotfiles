@@ -18,9 +18,12 @@ Plug 'drmikehenry/vim-headerguard'
 Plug 'AndrewRadev/linediff.vim'
 
 " LSP
-Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'hrsh7th/nvim-compe'
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/plenary.nvim'
 Plug 'jose-elias-alvarez/null-ls.nvim'
+Plug 'jose-elias-alvarez/nvim-lsp-ts-utils'
 
 if has('nvim')
   Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
@@ -61,8 +64,8 @@ set guicursor=
 set path+=**
 " Align on open parentheresis for indentation of multi-line statements
 " set cinoptions=(0
-set completeopt=longest,menuone
 set listchars=tab:→\ ,trail:·
+set signcolumn=yes
 
 let mapleader = " "
 
