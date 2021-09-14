@@ -1,30 +1,26 @@
 call plug#begin('~/.vim/plugged')
 
 Plug 'jiangmiao/auto-pairs'
-" tpope is a god
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-commentary'
-Plug 'tomasr/molokai'
-Plug 'morhetz/gruvbox'
-Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-abolish'
+Plug 'morhetz/gruvbox'
+Plug 'junegunn/vim-easy-align'
 Plug 'airblade/vim-gitgutter'
 Plug 'bronson/vim-trailing-whitespace'
-Plug 'majutsushi/tagbar'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'Yggdroot/indentLine'
 Plug 'babaybus/DoxygenToolkit.vim'
 Plug 'drmikehenry/vim-headerguard'
 Plug 'AndrewRadev/linediff.vim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'windwp/nvim-ts-autotag'
 
+" LSP
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
+Plug 'jose-elias-alvarez/null-ls.nvim'
 
 if has('nvim')
   Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
@@ -64,7 +60,7 @@ set guicursor=
 " Allow reccursive search on path
 set path+=**
 " Align on open parentheresis for indentation of multi-line statements
-set cinoptions=(0
+" set cinoptions=(0
 set completeopt=longest,menuone
 set listchars=tab:→\ ,trail:·
 
@@ -215,117 +211,12 @@ nmap <leader>gd :Gdiff<CR>
 
 nmap <leader>p <Plug>MarkdownPreviewToggle
 
-" LanguageClient and completion
-" let g:deoplete#enable_at_startup = 1
-" nnoremap <F1> :call LanguageClient_contextMenu()<CR>
-" let g:LanguageClient_serverCommands = {
-"     \ 'c': ['/usr/bin/clangd-9', '--log-file=/tmp/cc.log'],
-"     \ 'cpp': ['/usr/bin/clangd-9', '--log-file=/tmp/cc.log'],
-"     \ 'python': ['/usr/local/bin/pyls'],
-"     \ }
-" " no diagnostic from LSP
-" let g:LanguageClient_diagnosticsEnable = 0
-" let g:LanguageClient_loadSettings = 1 " Use an absolute configuration path if you want system-wide settings
-" let g:LanguageClient_settingsPath = '~/.config/nvim/settings.json'
-" let g:LanguageClient_completionPreferTextEdit = 1
-" " Disable the candidates in Comment/String syntaxes.
-" call deoplete#custom#source('_', 'disabled_syntaxes', ['Comment', 'String'])
-
-function SetLSPShortcuts()
-  nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
-  nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
-  nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
-  nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
-  nnoremap <leader>lx :call LanguageClient#textDocument_references()<CR>
-  nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
-  nnoremap <leader>lc :call LanguageClient#textDocument_completion()<CR>
-  nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
-  nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
-  nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
-endfunction()
-
-augroup LSP
-  autocmd!
-  autocmd FileType cpp,c call SetLSPShortcuts()
-augroup END
-
 function! g:HeaderguardName()
   return join(["__", toupper(expand('%:t:gs/[^0-9a-zA-Z_]/_/g')), "__"], "")
 endfunction
 
+lua require("lsp-config");
+
 if filereadable(expand("~/.vimrc_local"))
   source ~/.vimrc_local
 endif
-
-lua << EOF
-
-require('lspconfig').pyright.setup{}
-require('lspconfig').tsserver.setup{}
-
-local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-end
-
--- Compe
-vim.o.completeopt = "menuone,noselect"
-require'compe'.setup {
-  enabled = true;
-  autocomplete = true;
-  debug = false;
-  min_length = 1;
-  preselect = 'enable';
-  throttle_time = 80;
-  source_timeout = 200;
-  resolve_timeout = 800;
-  incomplete_delay = 400;
-  max_abbr_width = 100;
-  max_kind_width = 100;
-  max_menu_width = 100;
-  documentation = {
-    border = { '', '' ,'', ' ', '', '', '', ' ' }, -- the border option is the same as `|help nvim_open_win|`
-    winhighlight = "NormalFloat:CompeDocumentation,FloatBorder:CompeDocumentationBorder",
-    max_width = 120,
-    min_width = 60,
-    max_height = math.floor(vim.o.lines * 0.3),
-    min_height = 1,
-  };
-
-  source = {
-    path = true;
-    buffer = true;
-    calc = true;
-    nvim_lsp = true;
-    nvim_lua = true;
-    vsnip = true;
-    ultisnips = true;
-    luasnip = true;
-  };
-}
-
-require'nvim-treesitter.configs'.setup {
-  autotag = {
-    enable = true,
-    filetypes = { 'html', 'javascript', 'javascriptreact', 'typescriptreact', 'svelte', 'vue' }
-  }
-}
-
-EOF
