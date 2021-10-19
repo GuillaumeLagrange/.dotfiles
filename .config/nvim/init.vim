@@ -250,7 +250,7 @@ let g:vsnip_filetypes = {}
 let g:vsnip_filetypes.javascriptreact = ['javascript']
 let g:vsnip_filetypes.typescriptreact = ['typescript']
 
-lua require("lsp-config")
+lua require("init")
 
 if filereadable(expand("~/.vimrc_local"))
   source ~/.vimrc_local
