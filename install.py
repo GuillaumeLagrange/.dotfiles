@@ -28,7 +28,6 @@ _REQUIRED_SOFTWARE = [
 _SYMBOLIC_LINKS = [
     os.path.join(".config", "i3status"),
     os.path.join(".config", "nvim"),
-    ".vimrc",
     ".zshrc",
     "scripts",
     ".Xmodmap",
