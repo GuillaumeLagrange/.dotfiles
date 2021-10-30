@@ -12,7 +12,7 @@
 set $mod Mod4
 
 set $leftmon HDMI-1
-set $rightmon DP-1
+set $rightmon DP-3
 set $laptopmon eDP-1
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -53,6 +53,9 @@ bindsym $mod+Shift+d exec rofi -show window
 
 # firefox
 bindsym $mod+w exec firefox
+
+# bluetooth
+bindsym $mod+b exec blueman-manager
 
 # change focus
 bindsym $mod+h focus left
@@ -284,13 +287,11 @@ exec --no-startup-id redshift-gtk -l 48:2
 
 # Workspace assignment
 assign [class="Thunderbird"] 10
+assign [class="Steam"] 10
 # Spotify is bugged, for_window directive is mandatory...
 for_window [class="Spotify"] move to workspace 10
-# Teams notification
-for_window [title="Microsoft Teams Notification"] floating enable
-# Make workspace 0 and 7 tabbed by default
+# Make workspace 0 tabbed by default
 for_window [workspace="0"] layout tabbed
-for_window [workspace="7"] layout tabbed
 
 # Assign workspaces to monitors
 workspace "1" output $leftmon

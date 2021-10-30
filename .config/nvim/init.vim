@@ -12,8 +12,7 @@ Plug 'morhetz/gruvbox'
 Plug 'airblade/vim-gitgutter'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'Yggdroot/indentLine'
-Plug 'babaybus/DoxygenToolkit.vim'
+" Plug 'Yggdroot/indentLine'
 Plug 'AndrewRadev/linediff.vim'
 
 " Neovim plugins
@@ -36,6 +35,7 @@ endif
 " Install fzf in .fzf
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'gfanto/fzf-lsp.nvim'
 
 call plug#end()
 
@@ -70,6 +70,8 @@ set path+=**
 " set cinoptions=(0
 set listchars=tab:→\ ,trail:·
 set signcolumn=yes
+" Do not hide characters in json
+set conceallevel=0
 
 let mapleader = " "
 
@@ -103,7 +105,7 @@ nnoremap <C-j> <C-w>j
 " Strips whitespace
 nnoremap <leader>W :FixWhitespace<CR>
 
-let g:indentLine_char = '┊'
+" let g:indentLine_char = '┊'
 
 " // comments for C
 autocmd FileType c,cpp,cs,java setlocal commentstring=//\ %s
@@ -156,8 +158,8 @@ nnoremap <leader>F :Files<CR>
 nnoremap <leader>h :Files ~<CR>
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>t :Tags<CR>
-nnoremap <leader>e :Rg <C-R><C-W><CR>
-nnoremap <leader>r :Rg <CR>
+nnoremap <leader>r :Rg <C-R><C-W><CR>
+nnoremap <leader>R :Rg <CR>
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-s': 'split',
