@@ -17,6 +17,7 @@ Plug 'AndrewRadev/linediff.vim'
 
 " Neovim plugins
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-vsnip'
@@ -27,15 +28,14 @@ Plug 'kabouzeid/nvim-lspinstall'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'jose-elias-alvarez/null-ls.nvim'
 Plug 'jose-elias-alvarez/nvim-lsp-ts-utils'
-
-if has('nvim')
-  Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
-endif
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
 " Install fzf in .fzf
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'gfanto/fzf-lsp.nvim'
+" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+" Plug 'junegunn/fzf.vim'
+" Plug 'gfanto/fzf-lsp.nvim'
 
 call plug#end()
 
@@ -72,6 +72,8 @@ set listchars=tab:→\ ,trail:·
 set signcolumn=yes
 " Do not hide characters in json
 set conceallevel=0
+" Consider - as part of a word
+set isk+=-
 
 let mapleader = " "
 
@@ -101,6 +103,7 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 nnoremap <C-j> <C-w>j
+nnoremap <C-w>z :cclose<CR>
 
 " Strips whitespace
 nnoremap <leader>W :FixWhitespace<CR>
@@ -136,6 +139,9 @@ let g:NERDSpaceDelims = 1
 
 " Refresh buffers
 nnoremap <F5> :checktime<CR>
+
+" Quick access to config
+nnoremap <F12> :e ~/.config/nvim<CR>
 
 " fzf settings
 " Customize fzf colors to match your color scheme
@@ -198,13 +204,6 @@ imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab
 smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
 imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
 smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-
-" Select or cut text to use as $TM_SELECTED_TEXT in the next snippet.
-" See https://github.com/hrsh7th/vim-vsnip/pull/50
-nmap        s   <Plug>(vsnip-select-text)
-xmap        s   <Plug>(vsnip-select-text)
-nmap        S   <Plug>(vsnip-cut-text)
-xmap        S   <Plug>(vsnip-cut-text)
 
 " If you want to use snippet for multiple filetypes, you can `g:vsnip_filetypes` for it.
 let g:vsnip_filetypes = {}

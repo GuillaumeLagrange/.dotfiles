@@ -116,8 +116,8 @@ nvim_lsp.tsserver.setup {
     buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
     buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
     buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-    buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-    -- buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+    -- buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+    buf_set_keymap('n', '<space>t', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
   end
 }
 
@@ -143,7 +143,7 @@ cmp.setup({
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
-    -- ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
   },
   sources = {
     { name = 'nvim_lsp' },
@@ -163,9 +163,77 @@ cmp.setup({
 
 -- Tree sitter
 require'nvim-treesitter.configs'.setup {
-  indent = {
-    enable = true
-  }
+  ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+  },
+
+  -- incremental_selection = {
+  --   enable = false,
+  --   keymaps = {
+  --     init_selection    = "<leader>gnn",
+  --     node_incremental  = "<leader>gnr",
+  --     scope_incremental = "<leader>gne",
+  --     node_decremental  = "<leader>gnt",
+  --   },
+  -- },
+
+  -- indent = {
+  --   enable = true
+  -- },
+
+  -- rainbow = {
+  --   enable = true
+  -- },
+
+  -- context_commentstring = {
+  --   enable = true,
+  --   enable_autocmd = false,
+  -- },
+
+  -- textobjects = {
+  --   move = {
+  --     enable = true,
+  --     set_jumps = true, -- whether to set jumps in the jumplist
+  --     goto_next_start = {
+  --       ["]]"] = "@function.outer",
+  --       ["]m"] = "@class.outer",
+  --     },
+  --     goto_next_end = {
+  --       ["]["] = "@function.outer",
+  --       ["]M"] = "@class.outer",
+  --     },
+  --     goto_previous_start = {
+  --       ["[["] = "@function.outer",
+  --       ["[m"] = "@class.outer",
+  --     },
+  --     goto_previous_end = {
+  --       ["[]"] = "@function.outer",
+  --       ["[M"] = "@class.outer",
+  --     },
+  --   },
+  --   select = {
+  --     enable = true,
+
+  --     -- Automatically jump forward to textobj, similar to targets.vim
+  --     lookahead = true,
+
+  --     keymaps = {
+  --       -- You can use the capture groups defined in textobjects.scm
+  --       ["af"] = "@function.outer",
+  --       ["if"] = "@function.inner",
+  --       ["ac"] = "@class.outer",
+  --       ["ic"] = "@class.inner",
+  --     },
+  --   },
+  -- },
+
+--   textsubjects = {
+--       enable = true,
+--       keymaps = {
+--           ['<cr>'] = 'textsubjects-smart',
+--       }
+--     },
 }
 
 require'lspinstall'.setup() -- important
@@ -179,3 +247,93 @@ for _, server in pairs(servers) do
     }
   }
 end
+
+-- Indent
+vim.opt.list = true
+
+require("indent_blankline").setup {
+    show_current_context = true,
+}
+
+-- Telescope
+local actions    = require('telescope.actions')
+local previewers = require('telescope.previewers')
+local builtin    = require('telescope.builtin')
+require('telescope').setup {
+    defaults = {
+        vimgrep_arguments = {
+          'rg',
+          '--color=never',
+          '--no-heading',
+          '--with-filename',
+          '--line-number',
+          '--column',
+          '--smart-case'
+        },
+        layout_config = {
+          horizontal = {
+            mirror = false,
+          },
+          vertical = {
+            mirror = false,
+          },
+          prompt_position = "top",
+        },
+        file_sorter      = require('telescope.sorters').get_fzy_sorter,
+        prompt_prefix    = ' 🔍 ',
+        color_devicons   = true,
+
+        sorting_strategy = "ascending",
+
+        file_previewer   = require('telescope.previewers').vim_buffer_cat.new,
+        grep_previewer   = require('telescope.previewers').vim_buffer_vimgrep.new,
+        qflist_previewer = require('telescope.previewers').vim_buffer_qflist.new,
+
+        mappings = {
+            i = {
+                ["<C-x>"] = false,
+                ["<C-j>"] = actions.move_selection_next,
+                ["<C-k>"] = actions.move_selection_previous,
+                ["<C-q>"] = actions.send_to_qflist,
+                ["<C-s>"] = actions.cycle_previewers_next,
+                ["<C-a>"] = actions.cycle_previewers_prev,
+                ["<esc>"] = actions.close,
+            },
+            n = {
+                ["<C-s>"] = actions.cycle_previewers_next,
+                ["<C-a>"] = actions.cycle_previewers_prev,
+            }
+        }
+    },
+    pickers = {
+      buffers = {
+        sort_lastused = true,
+      }
+    },
+    extensions = {
+        fzf = {
+            override_generic_sorter = false,
+            override_file_sorter = true,
+            case_mode = "smart_case",
+        }
+    },
+}
+
+require('telescope').load_extension('fzf')
+
+
+-- Telescope
+vim.api.nvim_set_keymap("n", "<C-p>", "<CMD>Telescope git_files<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<C-o>", "<CMD>Telescope find_files<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<C-b>", "<CMD>Telescope buffers<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<C-f>", "<CMD>Telescope live_grep<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<C-e>", "<CMD>Telescope grep_string<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<C-g>", "<CMD>Telescope git_bcommits<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<C-a>", "<CMD>Telescope lsp_code_actions<CR>", { noremap = true })
+
+-- Remove highlights
+vim.api.nvim_set_keymap("n", "<CR>", ":noh<CR><CR>", { noremap = true, silent = true })
+
+-- Find word/file across project
+vim.api.nvim_set_keymap("n", "<Leader>pf", "yiw<CMD>Telescope git_files<CR><C-r>+<ESC>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<Leader>pw", "<CMD>Telescope grep_string<CR><ESC>", { noremap = true })
