@@ -1,97 +1,72 @@
 local nvim_lsp = require("lspconfig")
 
--- nvim-lsp-ts-utils
-require("null-ls").config {}
-require("lspconfig")["null-ls"].setup {}
+-- nvim-autopairs
+require('nvim-autopairs').setup({})
 
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
-local set_keymaps = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+-- nvim-tree
+require'nvim-tree'.setup({
+  diagnostics = {
+    enable = true,
+  },
+  update_focused_file = {
+    enable      = true,
+    update_cwd  = false,
+    ignore_list = {}
+  },
+})
+vim.api.nvim_set_keymap("n", "<space>f", "<cmd>lua require'nvim-tree'.toggle()<CR>", {noremap = true, silent = true})
 
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  -- buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  -- buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-end
+-- gitsigns
+require('gitsigns').setup()
 
+-- ts-lsp-utils
+nvim_lsp.tsserver.setup({
+    -- Needed for inlayHints. Merge this table with your settings or copy
+    -- it from the source if you want to add your own init_options.
+    init_options = require("nvim-lsp-ts-utils").init_options,
+    --
+    on_attach = function(client, bufnr)
+        local ts_utils = require("nvim-lsp-ts-utils")
 
-nvim_lsp.tsserver.setup {
-  on_attach = function(client, bufnr)
-    -- disable tsserver formatting if you plan on formatting via null-ls
-    client.resolved_capabilities.document_formatting = false
-    client.resolved_capabilities.document_range_formatting = false
+        -- defaults
+        ts_utils.setup({
+            debug = false,
+            disable_commands = false,
+            enable_import_on_completion = false,
 
-    local ts_utils = require("nvim-lsp-ts-utils")
+            -- import all
+            import_all_timeout = 5000, -- ms
+            -- lower numbers = higher priority
+            import_all_priorities = {
+                same_file = 1, -- add to existing import statement
+                local_files = 2, -- git files or files with relative path markers
+                buffer_content = 3, -- loaded buffer content
+                buffers = 4, -- loaded buffer names
+            },
+            import_all_scan_buffers = 100,
+            import_all_select_source = false,
 
-    -- defaults
-    ts_utils.setup {
-      debug = false,
-      disable_commands = false,
-      enable_import_on_completion = true,
+            -- filter diagnostics
+            filter_out_diagnostics_by_severity = {"hint"},
+            filter_out_diagnostics_by_code = {},
 
-      -- import all
-      import_all_timeout = 5000, -- ms
-      import_all_priorities = {
-        buffers = 4, -- loaded buffer names
-        buffer_content = 3, -- loaded buffer content
-        local_files = 2, -- git files or files with relative path markers
-        same_file = 1, -- add to existing import statement
-      },
-      import_all_scan_buffers = 100,
-      import_all_select_source = false,
+            -- inlay hints
+            auto_inlay_hints = false,
+            inlay_hints_highlight = "Comment",
 
-      -- eslint
-      eslint_enable_code_actions = true,
-      eslint_enable_disable_comments = true,
-      eslint_bin = "eslint",
-      eslint_enable_diagnostics = false,
-      eslint_opts = {},
+            -- update imports on file move
+            update_imports_on_move = true,
+            require_confirmation_on_move = true,
+            watch_dir = nil,
+        })
 
-      -- formatting
-      enable_formatting = true,
-      formatter = "prettier",
-      formatter_opts = {},
+        vim.diagnostic.config({
+          virtual_text = false,
+          underline = false,
+        })
 
-      -- update imports on file move
-      update_imports_on_move = false,
-      require_confirmation_on_move = false,
-      watch_dir = nil,
-
-      -- filter diagnostics
-      filter_out_diagnostics_by_severity = {},
-      filter_out_diagnostics_by_code = {},
-    }
-
-    -- Setup lspconfig.
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-
-    -- disable tsserver formatting
-    client.resolved_capabilities.document_formatting = false
-
-    -- define an alias
-    vim.cmd("command -buffer Formatting lua vim.lsp.buf.formatting()")
-    vim.cmd("command -buffer FormattingSync lua vim.lsp.buf.formatting_sync()")
-
-    -- format on save
-    vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
-
-    -- required to fix code action ranges and filter diagnostics
-    ts_utils.setup_client(client)
+        -- required to fix code action ranges and filter diagnostics
+        ts_utils.setup_client(client)
 
     -- no default maps, so you may want to define some here
     local opts = { silent = true }
@@ -113,31 +88,59 @@ nvim_lsp.tsserver.setup {
     buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
     buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
     buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-    buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-    buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-    buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-    -- buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-    buf_set_keymap('n', '<space>t', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+    buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+    buf_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+    buf_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+    -- buf_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.set_loclist()<CR>', opts)
+    buf_set_keymap('n', '<space>t', '<cmd>EslintFixAll<CR>', opts)
   end
-}
+})
+
+-- eslint
+require'lspconfig'.eslint.setup{}
 
 -- nvim-cmp
 vim.o.completeopt = "menuone,noselect"
 local cmp = require'cmp'
 
+local cmp_kinds = {
+  Text = '  ',
+  Method = '  ',
+  Function = '  ',
+  Constructor = '  ',
+  Field = '  ',
+  Variable = '  ',
+  Class = '  ',
+  Interface = '  ',
+  Module = '  ',
+  Property = '  ',
+  Unit = '  ',
+  Value = '  ',
+  Enum = '  ',
+  Keyword = '  ',
+  Snippet = '  ',
+  Color = '  ',
+  File = '  ',
+  Reference = '  ',
+  Folder = '  ',
+  EnumMember = '  ',
+  Constant = '  ',
+  Struct = '  ',
+  Event = '  ',
+  Operator = '  ',
+  TypeParameter = '  ',
+}
+
 cmp.setup({
-  snippet = {
-    expand = function(args)
-      -- For `vsnip` user.
-      vim.fn["vsnip#anonymous"](args.body)
-
-      -- For `luasnip` user.
-      -- require('luasnip').lsp_expand(args.body)
-
-      -- For `ultisnips` user.
-      -- vim.fn["UltiSnips#Anon"](args.body)
-    end,
-  },
+      snippet = {
+      -- REQUIRED - you must specify a snippet engine
+      expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+        -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
+      end,
+    },
   mapping = {
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
@@ -147,18 +150,15 @@ cmp.setup({
   },
   sources = {
     { name = 'nvim_lsp' },
-
-    -- For vsnip user.
-    { name = 'vsnip' },
-
-    -- For luasnip user.
-    -- { name = 'luasnip' },
-
-    -- For ultisnips user.
-    -- { name = 'ultisnips' },
-
     { name = 'buffer' },
-  }
+  };
+
+  formatting = {
+    format = function(_, vim_item)
+      vim_item.kind = (cmp_kinds[vim_item.kind] or '') .. vim_item.kind
+      return vim_item
+    end,
+  },
 })
 
 -- Tree sitter
@@ -168,91 +168,51 @@ require'nvim-treesitter.configs'.setup {
     enable = true,              -- false will disable the whole extension
   },
 
-  -- incremental_selection = {
-  --   enable = false,
-  --   keymaps = {
-  --     init_selection    = "<leader>gnn",
-  --     node_incremental  = "<leader>gnr",
-  --     scope_incremental = "<leader>gne",
-  --     node_decremental  = "<leader>gnt",
-  --   },
-  -- },
+  indent = {
+    enable = true
+  },
 
-  -- indent = {
-  --   enable = true
-  -- },
-
-  -- rainbow = {
-  --   enable = true
-  -- },
-
-  -- context_commentstring = {
-  --   enable = true,
-  --   enable_autocmd = false,
-  -- },
-
-  -- textobjects = {
-  --   move = {
-  --     enable = true,
-  --     set_jumps = true, -- whether to set jumps in the jumplist
-  --     goto_next_start = {
-  --       ["]]"] = "@function.outer",
-  --       ["]m"] = "@class.outer",
-  --     },
-  --     goto_next_end = {
-  --       ["]["] = "@function.outer",
-  --       ["]M"] = "@class.outer",
-  --     },
-  --     goto_previous_start = {
-  --       ["[["] = "@function.outer",
-  --       ["[m"] = "@class.outer",
-  --     },
-  --     goto_previous_end = {
-  --       ["[]"] = "@function.outer",
-  --       ["[M"] = "@class.outer",
-  --     },
-  --   },
-  --   select = {
-  --     enable = true,
-
-  --     -- Automatically jump forward to textobj, similar to targets.vim
-  --     lookahead = true,
-
-  --     keymaps = {
-  --       -- You can use the capture groups defined in textobjects.scm
-  --       ["af"] = "@function.outer",
-  --       ["if"] = "@function.inner",
-  --       ["ac"] = "@class.outer",
-  --       ["ic"] = "@class.inner",
-  --     },
-  --   },
-  -- },
-
---   textsubjects = {
---       enable = true,
---       keymaps = {
---           ['<cr>'] = 'textsubjects-smart',
---       }
---     },
+  rainbow = {
+    enable = true
+  },
 }
-
-require'lspinstall'.setup() -- important
-
-local servers = require'lspinstall'.installed_servers()
-for _, server in pairs(servers) do
-  require'lspconfig'[server].setup{
-    on_attach = set_keymaps,
-    flags = {
-      debounce_text_changes=150,
-    }
-  }
-end
 
 -- Indent
 vim.opt.list = true
 
 require("indent_blankline").setup {
     show_current_context = true,
+}
+
+-- Lualine
+require'lualine'.setup {
+  options = {
+    section_separators = { left = '', right = ''},
+    component_separators = { left = '', right = ''}
+  },
+  sections = {
+    lualine_c = {
+      {
+        'filename',
+        path= 1,
+      }
+    },
+    lualine_x = {
+      {
+        'filetype',
+        icon_only = true,
+      }
+    },
+  },
+  inactive_sections = {
+    lualine_c = {
+      {
+        'filename',
+        path= 1,
+      }
+    }
+  },
+  extensions = {'quickfix'}
 }
 
 -- Telescope

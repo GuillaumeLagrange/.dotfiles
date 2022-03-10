@@ -86,7 +86,6 @@ alias grst1='git reset HEAD~1'
 alias gfu='gc --fixup'
 
 # fzf aliases
-# export FZF_DEFAULT_COMMAND='rg --files --hidden'
 alias gaf='git add $(git ls-files --modified --others --exclude-standard | fzf -m --height=40% --reverse)'
 alias gch='git checkout $(git name-rev HEAD --name-only)'
 
@@ -154,9 +153,13 @@ man() {
     command man "$@"
 }
 
+# thefuck
+eval $(thefuck --alias)
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 [ -f ~/.zshrc_local ]  && source ~/.zshrc_local
+export FZF_DEFAULT_COMMAND='rg --files --hidden'
 
 PATH="/home/glagrange/perl5/bin${PATH:+:${PATH}}"; export PATH;
 PERL5LIB="/home/glagrange/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;

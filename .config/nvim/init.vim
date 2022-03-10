@@ -1,7 +1,7 @@
 call plug#begin('~/.vim/plugged')
 
 " Vim plugins
-Plug 'jiangmiao/auto-pairs'
+Plug 'windwp/nvim-autopairs'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'
@@ -9,33 +9,31 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-abolish'
 Plug 'morhetz/gruvbox'
-Plug 'airblade/vim-gitgutter'
-Plug 'bronson/vim-trailing-whitespace'
 Plug 'christoomey/vim-tmux-navigator'
 " Plug 'Yggdroot/indentLine'
 Plug 'AndrewRadev/linediff.vim'
 
 " Neovim plugins
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'p00f/nvim-ts-rainbow'
 Plug 'lukas-reineke/indent-blankline.nvim'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'neovim/nvim-lspconfig'
-Plug 'rafamadriz/friendly-snippets'
-Plug 'kabouzeid/nvim-lspinstall'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'jose-elias-alvarez/null-ls.nvim'
 Plug 'jose-elias-alvarez/nvim-lsp-ts-utils'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-
-" Install fzf in .fzf
-" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-" Plug 'junegunn/fzf.vim'
-" Plug 'gfanto/fzf-lsp.nvim'
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'kyazdani42/nvim-tree.lua'
+Plug 'lewis6991/gitsigns.nvim'
+Plug 'David-Kunz/jester'
 
 call plug#end()
 
@@ -61,7 +59,6 @@ set ignorecase
 set smartcase
 set hlsearch
 set cursorline
-set colorcolumn=100
 set mouse=a
 set guicursor=
 " Allow reccursive search on path
@@ -105,11 +102,6 @@ nnoremap <C-l> <C-w>l
 nnoremap <C-j> <C-w>j
 nnoremap <C-w>z :cclose<CR>
 
-" Strips whitespace
-nnoremap <leader>W :FixWhitespace<CR>
-
-" let g:indentLine_char = '┊'
-
 " // comments for C
 autocmd FileType c,cpp,cs,java setlocal commentstring=//\ %s
 
@@ -124,8 +116,8 @@ endfunc
 " nnoremap <C-n> :call NumberToggle()<cr>
 
 " Theme
+" let g:tokyonight_transparent = 1
 colorscheme gruvbox
-set background=dark
 let g:gruvbox_termcolors = 256
 let g:gruvbox_contrast_dark = 'hard'
 " Transparency
@@ -134,52 +126,11 @@ hi Normal guibg=NONE ctermbg=NONE
 " Delete buffer without closing the window
 map <leader>q :bp<bar>sp<bar>bn<bar>bd<CR>
 
-" Space between comment and delimiters
-let g:NERDSpaceDelims = 1
-
 " Refresh buffers
 nnoremap <F5> :checktime<CR>
 
 " Quick access to config
 nnoremap <F12> :e ~/.config/nvim<CR>
-
-" fzf settings
-" Customize fzf colors to match your color scheme
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
-nnoremap <leader>f :GFiles<CR>
-nnoremap <leader>F :Files<CR>
-nnoremap <leader>h :Files ~<CR>
-nnoremap <leader>b :Buffers<CR>
-nnoremap <leader>t :Tags<CR>
-nnoremap <leader>r :Rg <C-R><C-W><CR>
-nnoremap <leader>R :Rg <CR>
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-s': 'split',
-  \ 'ctrl-v': 'vsplit' }
-command! -bang -nargs=* Ag
-  \ call fzf#vim#ag(<q-args>,
-  \                 '-g'
-  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \                 <bang>0)
-
-" Git gutter
-nmap <Leader>ha <Plug>(GitGutterStageHunk)
-nmap <Leader>hv <Plug>(GitGutterPreviewHunk)
 
 " Fugitive
 nmap <leader>gw :Gwrite<CR>
@@ -190,25 +141,22 @@ nmap <leader>gs :Git<CR>
 nmap <leader>gd :Gdiff<CR>
 nmap <leader>gp :Git blame<CR>
 
-" Snips
-" Expand
-imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
-smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
-
-" Expand or jump
-imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
-smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
-
-" Jump forward or backward
-imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-
-" If you want to use snippet for multiple filetypes, you can `g:vsnip_filetypes` for it.
-let g:vsnip_filetypes = {}
-let g:vsnip_filetypes.javascriptreact = ['javascript']
-let g:vsnip_filetypes.typescriptreact = ['typescript']
+" gray
+highlight! CmpItemAbbrDeprecated guibg=NONE gui=strikethrough guifg=#808080
+" blue
+highlight! CmpItemAbbrMatch guibg=NONE guifg=#569CD6
+highlight! CmpItemAbbrMatchFuzzy guibg=NONE guifg=#569CD6
+" light blue
+highlight! CmpItemKindVariable guibg=NONE guifg=#9CDCFE
+highlight! CmpItemKindInterface guibg=NONE guifg=#9CDCFE
+highlight! CmpItemKindText guibg=NONE guifg=#9CDCFE
+" pink
+highlight! CmpItemKindFunction guibg=NONE guifg=#C586C0
+highlight! CmpItemKindMethod guibg=NONE guifg=#C586C0
+" front
+highlight! CmpItemKindKeyword guibg=NONE guifg=#D4D4D4
+highlight! CmpItemKindProperty guibg=NONE guifg=#D4D4D4
+highlight! CmpItemKindUnit guibg=NONE guifg=#D4D4D4
 
 lua require("init")
 
