@@ -11,9 +11,8 @@
 
 set $mod Mod4
 
-set $leftmon HDMI-1
-set $rightmon DP-3
-set $laptopmon eDP-1
+set $mainmonitor DP3
+set $laptopmon eDP1
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -59,6 +58,8 @@ bindsym $mod+Shift+w exec chromium
 # bluetooth
 bindsym $mod+b exec blueman-manager
 
+bindsym $mod+space exec rofimoji
+
 # change focus
 bindsym $mod+h focus left
 bindsym $mod+j focus down
@@ -101,7 +102,7 @@ bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+# bindsym $mod+space focus mode_toggle
 
 # focus the parent container
 bindsym $mod+q focus parent
@@ -313,14 +314,14 @@ for_window [workspace="0"] layout tabbed
 for_window [title="Bluetooth Devices"] floating enable
 
 # Assign workspaces to monitors
-workspace "1" output $leftmon
-workspace "3" output $leftmon
-workspace "5" output $leftmon
-workspace "7" output $leftmon
-workspace "9" output $leftmon
+workspace "1" output $mainmonitor
+workspace "3" output $mainmonitor
+workspace "5" output $mainmonitor
+workspace "7" output $mainmonitor
+workspace "9" output $mainmonitor
 
-workspace "2" output $rightmon
-workspace "4" output $rightmon
-workspace "6" output $rightmon
-workspace "8" output $rightmon
+workspace "2" output $laptopmon
+workspace "4" output $laptopmon
+workspace "6" output $laptopmon
+workspace "8" output $laptopmon
 workspace "10" output $laptopmon

@@ -100,7 +100,7 @@ nvim_lsp.tsserver.setup({
 require'lspconfig'.eslint.setup{}
 
 -- nvim-cmp
-vim.o.completeopt = "menuone,noselect"
+vim.o.completeopt = "menu,menuone,noselect"
 local cmp = require'cmp'
 
 local cmp_kinds = {
@@ -132,22 +132,22 @@ local cmp_kinds = {
 }
 
 cmp.setup({
-      snippet = {
-      -- REQUIRED - you must specify a snippet engine
-      expand = function(args)
-        vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-        -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-        -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
-      end,
-    },
-  mapping = {
+    snippet = {
+    -- REQUIRED - you must specify a snippet engine
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+      -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+      -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+      -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
+    end,
+  },
+  mapping = cmp.mapping.preset.insert({
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
-  },
+  }),
   sources = {
     { name = 'nvim_lsp' },
     { name = 'buffer' },
@@ -242,6 +242,7 @@ require('telescope').setup {
         file_sorter      = require('telescope.sorters').get_fzy_sorter,
         prompt_prefix    = ' 🔍 ',
         color_devicons   = true,
+        path_display     = {"truncate"},
 
         sorting_strategy = "ascending",
 
@@ -280,7 +281,7 @@ require('telescope').setup {
 }
 
 require('telescope').load_extension('fzf')
-
+require("telescope").load_extension("ui-select")
 
 -- Telescope
 vim.api.nvim_set_keymap("n", "<C-p>", "<CMD>Telescope git_files<CR>", { noremap = true })
@@ -289,7 +290,7 @@ vim.api.nvim_set_keymap("n", "<C-b>", "<CMD>Telescope buffers<CR>", { noremap = 
 vim.api.nvim_set_keymap("n", "<C-f>", "<CMD>Telescope live_grep<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<C-e>", "<CMD>Telescope grep_string<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<C-g>", "<CMD>Telescope git_bcommits<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<C-a>", "<CMD>Telescope lsp_code_actions<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<C-a>", "<CMD>lua vim.lsp.buf.code_action()<CR>", { noremap = true })
 
 -- Remove highlights
 vim.api.nvim_set_keymap("n", "<CR>", ":noh<CR><CR>", { noremap = true, silent = true })
