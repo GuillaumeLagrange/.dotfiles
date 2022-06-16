@@ -103,6 +103,24 @@ cmp.setup({
   },
 })
 
+-- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline('/', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+      { name = 'cmdline' }
+    })
+})
+
 -- Tree sitter
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
