@@ -115,10 +115,10 @@ cmp.setup({
     ['<C-e>'] = cmp.mapping.close(),
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
   }),
-  sources = {
+  sources = cmp.config.sources(
+  {
     { name = 'nvim_lsp' },
-    { name = 'buffer' },
-  };
+  }),
   formatting = {
     format = function(_, vim_item)
       vim_item.kind = (cmp_kinds[vim_item.kind] or '') .. vim_item.kind
