@@ -10,7 +10,6 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-abolish'
 Plug 'gruvbox-community/gruvbox'
 Plug 'christoomey/vim-tmux-navigator'
-" Plug 'Yggdroot/indentLine'
 Plug 'AndrewRadev/linediff.vim'
 
 " Neovim plugins
