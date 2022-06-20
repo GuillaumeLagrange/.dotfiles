@@ -11,6 +11,7 @@ Plug 'tpope/vim-abolish'
 Plug 'gruvbox-community/gruvbox'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'AndrewRadev/linediff.vim'
+Plug 'editorconfig/editorconfig-vim'
 
 " Neovim plugins
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
