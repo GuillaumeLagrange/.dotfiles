@@ -229,7 +229,11 @@ require('telescope').setup {
     file_sorter      = require('telescope.sorters').get_fzy_sorter,
     prompt_prefix    = ' 🔍 ',
     color_devicons   = true,
-    path_display     = {"truncate"},
+    -- Format path as "file.txt (path\to\file\)"
+    path_display = function(opts, path)
+      local tail = require("telescope.utils").path_tail(path)
+      return string.format("%s (%s)", tail, path)
+    end,
 
     sorting_strategy = "ascending",
 

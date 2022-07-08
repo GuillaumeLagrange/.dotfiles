@@ -207,8 +207,8 @@ bindsym $mod+shift+o mode "$mode_sound"
 bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
 
-bindsym Print exec "scrot /tmp/screenshot-$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'"
-bindsym Shift+Print --release exec "scrot -s /tmp/screenshot-$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'"
+bindsym Print exec flameshot gui
+bindsym Shift+Print exec flameshot gui
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
