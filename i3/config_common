@@ -120,6 +120,7 @@ bindsym $mod+p scratchpad show
 
 # urgent workspace
 bindsym $mod+Tab [urgent=latest] focus
+focus_on_window_activation focus
 
 # azerty
 ## switch to workspace
