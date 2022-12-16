@@ -3,9 +3,9 @@
 # Suspend notification display
 pkill -u "$USER" -USR1 dunst
 
-# Check if media player is currently playing
-status=`playerctl status`
-playerctl pause
+# # Check if media player is currently playing
+# status=`playerctl status`
+# playerctl pause
 
 # Lock computer
 i3lock -c 202020 -n

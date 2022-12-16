@@ -32,6 +32,11 @@ font pango:Inconsolatas Sans Mono 10
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+# class                 border  backgr. text    indicator child_border
+client.focused          #ad530d #ad530d #ffffff #ad530d   #ad530d
+
+client.background       #ffffff
+
 # Hide borders when window is alone in workspace (ubuntu LTS version too old...)
 hide_edge_borders smart
 new_window 1pixel
@@ -44,7 +49,7 @@ bindsym $mod+Shift+a kill
 
 # start dmenu (a program launcher)
 # bindsym $mod+d exec dmenu_run
-bindsym $mod+d exec rofi -show run
+bindsym $mod+d exec rofi -show drun
 bindsym $mod+Shift+d exec rofi -show window
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
@@ -119,8 +124,7 @@ bindsym $mod+Shift+p move scratchpad
 bindsym $mod+p scratchpad show
 
 # urgent workspace
-bindsym $mod+Tab [urgent=latest] focus
-focus_on_window_activation focus
+bindsym $mod+Tab [urgent=latest] focus focus_on_window_activation focus
 
 # azerty
 ## switch to workspace
@@ -270,14 +274,16 @@ bindsym $mod+o mode "$mode_display"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-bar {
-        status_command SCRIPT_DIR=~/.config/i3blocks i3blocks
-        tray_output primary
-        position top
-}
+# bar {
+#         status_command SCRIPT_DIR=~/.config/i3blocks i3blocks
+#         tray_output primary
+#         position top
+# }
 
 # Autostarts
 
+# Polybar
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 # NetworkManager applet
 exec --no-startup-id nm-applet
 # Dropbox
@@ -300,7 +306,7 @@ exec --no-startup-id picom -b
 # Disable middle button click
 exec --no-startup-id xbindkeys
 # Keyboard layout
-exec_always setxkbmap us_qwerty-fr && xmodmap ~/.Xmodmap
+exec_always --no-startup-id setxkbmap us_qwerty-fr && xmodmap ~/.Xmodmap
 # Redshift
 exec --no-startup-id redshift-gtk -l 48:2
 

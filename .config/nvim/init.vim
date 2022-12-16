@@ -38,6 +38,10 @@ Plug 'kyazdani42/nvim-tree.lua'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'David-Kunz/jester'
 
+Plug 'antoinemadec/FixCursorHold.nvim'
+Plug 'nvim-neotest/neotest'
+Plug 'haydenmeade/neotest-jest'
+
 call plug#end()
 
 syntax on
@@ -104,6 +108,9 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 nnoremap <C-j> <C-w>j
 nnoremap <C-w>z :cclose<CR>
+
+" Exit terminal insert mode
+:tnoremap <Esc> <C-\><C-n>
 
 " // comments for C
 autocmd FileType c,cpp,cs,java setlocal commentstring=//\ %s
