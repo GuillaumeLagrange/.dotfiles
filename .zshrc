@@ -118,30 +118,7 @@ zstyle ':completion:*:make:*' tag-order 'targets'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-# place this after nvm initialization!
-autoload -U add-zsh-hook
-load-nvmrc() {
-  local node_version="$(nvm version)"
-  local nvmrc_path="$(nvm_find_nvmrc)"
-
-  if [ -n "$nvmrc_path" ]; then
-    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
-
-    if [ "$nvmrc_node_version" = "N/A" ]; then
-      nvm install
-    elif [ "$nvmrc_node_version" != "$node_version" ]; then
-      nvm use
-    fi
-  elif [ "$node_version" != "$(nvm version default)" ]; then
-    echo "Reverting to nvm default version"
-    nvm use default
-  fi
-}
-add-zsh-hook chpwd load-nvmrc
-load-nvmrc
+export AWS_SDK_LOAD_CONFIG=1
 
 # man page colors
 man() {
@@ -168,4 +145,12 @@ PERL_LOCAL_LIB_ROOT="/home/glagrange/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_L
 PERL_MB_OPT="--install_base \"/home/glagrange/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/home/glagrange/perl5"; export PERL_MM_OPT;
 
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+# pnpm
+export PNPM_HOME="/home/glagrange/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+# pnpm end
+
+# fnm
+export PATH="/home/glagrange/.local/share/fnm:$PATH"
+eval "`fnm env`"
+eval "$(fnm env --use-on-cd)"

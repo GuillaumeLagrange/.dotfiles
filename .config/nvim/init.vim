@@ -26,6 +26,7 @@ Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/plenary.nvim'
+Plug 'jose-elias-alvarez/null-ls.nvim'
 Plug 'jose-elias-alvarez/typescript.nvim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'nvim-telescope/telescope.nvim'
@@ -37,6 +38,8 @@ Plug 'kyazdani42/nvim-web-devicons'
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'David-Kunz/jester'
+Plug 'williamboman/mason.nvim', { 'do': ':MasonUpdate' }
+Plug 'williamboman/mason-lspconfig.nvim'
 
 Plug 'antoinemadec/FixCursorHold.nvim'
 Plug 'nvim-neotest/neotest'
@@ -68,10 +71,6 @@ set hlsearch
 set cursorline
 set mouse=a
 set guicursor=
-" Allow reccursive search on path
-set path+=**
-" Align on open parentheresis for indentation of multi-line statements
-" set cinoptions=(0
 set listchars=tab:→\ ,trail:·
 set signcolumn=yes
 " Do not hide characters in json

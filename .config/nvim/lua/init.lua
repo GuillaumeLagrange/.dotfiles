@@ -8,6 +8,9 @@ require'nvim-tree'.setup({
   diagnostics = {
     enable = true,
   },
+  renderer = {
+    full_name = true,
+  },
   update_focused_file = {
     enable      = true,
     update_cwd  = false,
@@ -34,40 +37,76 @@ require("typescript").setup({
 require'lspconfig'.eslint.setup{
   on_attach = function(client, bufnr)
     vim.api.nvim_exec('autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll', false)
-    vim.keymap.set('n', '<space>t', '<cmd>EslintFixAll<CR>', { silent = true, buffer=bufnr })
   end
 }
 
--- json
-require'lspconfig'.jsonls.setup{
-  on_attach = function(client, bufnr)
-    vim.keymap.set('n', '<space>t', '<cmd>lua vim.lsp.buf.formatting()<CR>', { silent = true, buffer = bufnr })
-  end
+-- nullls
+local null_ls = require("null-ls")
+local lSsources = {
+  null_ls.builtins.formatting.prettier.with({
+    filetypes = {
+      "javascript",
+      "typescript",
+      "css",
+      "scss",
+      "html",
+      "json",
+      "yaml",
+      "markdown",
+      "graphql",
+      "md",
+      "txt",
+    },
+    only_local = "node_modules/.bin",
+  }),
+  null_ls.builtins.formatting.rustfmt,
 }
+
+local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+require("null-ls").setup({
+  sources = lSsources,
+  on_attach = function(client, bufnr)
+    if client.supports_method("textDocument/formatting") then
+      vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        group = augroup,
+        buffer = bufnr,
+        callback = function()
+          vim.lsp.buf.format({
+            bufnr = bufnr,
+            filter = function(client)
+              return client.name == "null-ls"
+            end,
+          })
+        end,
+      })
+    end
+  end,
+})
 
 -- lua
-require'lspconfig'.sumneko_lua.setup {
-  settings = {
-    Lua = {
-      runtime = {
-        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-        version = 'LuaJIT',
-      },
-      diagnostics = {
-        -- Get the language server to recognize the `vim` global
-        globals = {'vim'},
-      },
-      workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = vim.api.nvim_get_runtime_file("", true),
-      },
-      -- Do not send telemetry data containing a randomized but unique identifier
-      telemetry = {
-        enable = false,
-      },
-    },
-  },
-}
+-- require'lspconfig'.sumneko_lua.setup {
+--   settings = {
+--     Lua = {
+--       runtime = {
+--         -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+--         version = 'LuaJIT',
+--       },
+--       diagnostics = {
+--         -- Get the language server to recognize the `vim` global
+--         globals = {'vim'},
+--       },
+--       workspace = {
+--         -- Make the server aware of Neovim runtime files
+--         library = vim.api.nvim_get_runtime_file("", true),
+--       },
+--       -- Do not send telemetry data containing a randomized but unique identifier
+--       telemetry = {
+--         enable = false,
+--       },
+--     },
+--   },
+-- }
 
 -- nvim-cmp
 vim.o.completeopt = "menu,menuone,noselect"
@@ -109,7 +148,7 @@ cmp.setup({
     end,
   },
   mapping = cmp.mapping.preset.insert({
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete({
       config = {
@@ -123,12 +162,17 @@ cmp.setup({
   }),
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
+    { name = 'buffer' },
   }),
   formatting = {
     format = function(_, vim_item)
       vim_item.kind = (cmp_kinds[vim_item.kind] or '') .. vim_item.kind
       return vim_item
     end,
+  },
+  preselect = 'none',
+  completion = {
+    completeopt = 'menu,menuone,noinsert,noselect'
   },
 })
 
@@ -256,7 +300,10 @@ require('telescope').setup {
   pickers = {
     buffers = {
       sort_lastused = true,
-    }
+    },
+    git_files = {
+      git_command = { "git", "ls-files", "--exclude-standard", "--cached", "--others", "--deduplicate" },
+    },
   },
   extensions = {
     fzf = {
@@ -269,6 +316,22 @@ require('telescope').setup {
 
 require('telescope').load_extension('fzf')
 require("telescope").load_extension("ui-select")
+
+require("mason").setup()
+require("mason-lspconfig").setup()
+require("mason-lspconfig").setup_handlers {
+  -- The first entry (without a key) will be the default handler
+  -- and will be called for each installed server that doesn't have
+  -- a dedicated handler.
+  function (server_name) -- default handler (optional)
+    require("lspconfig")[server_name].setup {}
+  end,
+  -- Next, you can provide a dedicated handler for specific servers.
+  -- For example, a handler override for the `rust_analyzer`:
+  -- ["rust_analyzer"] = function ()
+  --   require("rust-tools").setup {}
+  -- end
+}
 
 -- Disable underline
 vim.diagnostic.config({
@@ -286,6 +349,7 @@ vim.api.nvim_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', 
 vim.api.nvim_set_keymap('n', '<space>k', '<cmd>lua vim.lsp.buf.signature_help()<CR>', { silent = true })
 vim.api.nvim_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', { silent = true })
 vim.api.nvim_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', { silent = true })
+vim.api.nvim_set_keymap('n', '<space>t', '<cmd>lua vim.lsp.buf.format()<CR>', { silent = true })
 vim.api.nvim_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', { silent = true })
 vim.api.nvim_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', { silent = true })
 vim.api.nvim_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', { silent = true })
@@ -296,7 +360,7 @@ vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', { 
 vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', { silent = true })
 
 -- nvim tree
-vim.api.nvim_set_keymap("n", "<space>f", "<cmd>lua require'nvim-tree'.toggle()<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap("n", "<space>f", "<cmd>NvimTreeToggle<CR>", {noremap = true, silent = true})
 
 -- Telescope
 vim.api.nvim_set_keymap("n", "<C-p>", "<CMD>Telescope git_files<CR>", { noremap = true })
