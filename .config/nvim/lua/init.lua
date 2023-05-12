@@ -162,7 +162,7 @@ cmp.setup({
   }),
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
-    { name = 'buffer' },
+    { name = 'buffer', keyword_length = 3 },
   }),
   formatting = {
     format = function(_, vim_item)
@@ -245,6 +245,10 @@ require'lualine'.setup {
   },
   extensions = {'quickfix'}
 }
+
+-- mini
+require('mini.sessions').setup()
+require('mini.starter').setup()
 
 -- Telescope
 local actions    = require('telescope.actions')
