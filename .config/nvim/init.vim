@@ -31,6 +31,7 @@ Plug 'jose-elias-alvarez/typescript.nvim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'nvim-telescope/telescope-file-browser.nvim'
 Plug 'debugloop/telescope-undo.nvim'
 Plug 'nvim-telescope/telescope-ui-select.nvim'
 Plug 'olimorris/persisted.nvim'
@@ -42,10 +43,9 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'David-Kunz/jester'
 Plug 'williamboman/mason.nvim', { 'do': ':MasonUpdate' }
 Plug 'williamboman/mason-lspconfig.nvim'
-
-Plug 'antoinemadec/FixCursorHold.nvim'
-Plug 'nvim-neotest/neotest'
-Plug 'haydenmeade/neotest-jest'
+Plug 'nvimdev/lspsaga.nvim'
+Plug 'simrat39/rust-tools.nvim'
+Plug 'mfussenegger/nvim-dap'
 
 call plug#end()
 

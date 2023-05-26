@@ -1,6 +1,9 @@
 -- nvim-autopairs
 require("nvim-autopairs").setup()
 
+-- web-devicons
+require("nvim-web-devicons").setup()
+
 -- nvim-tree
 require("nvim-tree").setup({
   diagnostics = {
@@ -64,9 +67,9 @@ require("mason-lspconfig").setup_handlers({
 -- typescript
 require("typescript").setup({
   disable_commands = false, -- prevent the plugin from creating Vim commands
-  debug = false,            -- enable debug logging for commands
+  debug = false, -- enable debug logging for commands
   go_to_source_definition = {
-    fallback = true,        -- fall back to standard LSP definition on failure
+    fallback = true, -- fall back to standard LSP definition on failure
   },
   server = {
     -- pass options to lspconfig's setup method
@@ -83,6 +86,19 @@ require("lspconfig").eslint.setup({
   on_attach = function(client, bufnr)
     vim.keymap.set("n", "<space>t", ":EslintFixAll<CR>", { silent = true, buffer = bufnr })
   end,
+})
+
+-- rust-tools
+local rt = require("rust-tools")
+rt.setup({
+  server = {
+    on_attach = function(_, bufnr)
+      -- Hover actions
+      vim.keymap.set("n", "K", rt.hover_actions.hover_actions, { buffer = bufnr })
+      -- Code action groups
+      vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+    end,
+  },
 })
 
 -- nullls
@@ -105,6 +121,7 @@ local lSsources = {
     only_local = "node_modules/.bin",
   }),
   null_ls.builtins.formatting.rustfmt,
+  null_ls.builtins.formatting.stylua,
 }
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -128,6 +145,8 @@ require("null-ls").setup({
     end
   end,
 })
+
+require("lspsaga").setup({})
 
 -- nvim-cmp
 vim.o.completeopt = "menu,menuone,noselect"
@@ -183,7 +202,7 @@ cmp.setup({
   }),
   sources = cmp.config.sources({
     { name = "nvim_lsp" },
-    { name = "buffer",  keyword_length = 3 },
+    { name = "buffer", keyword_length = 3 },
   }),
   formatting = {
     format = function(_, vim_item)
@@ -219,7 +238,7 @@ cmp.setup.cmdline(":", {
 require("nvim-treesitter.configs").setup({
   ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   highlight = {
-    enable = true,          -- false will disable the whole extension
+    enable = true, -- false will disable the whole extension
   },
   indent = {
     enable = true,
@@ -272,17 +291,17 @@ require("lualine").setup({
 -- require('mini.starter').setup()
 require("persisted").setup({
   save_dir = vim.fn.expand(vim.fn.stdpath("data") .. "/sessions/"), -- directory where session files are saved
-  silent = false,                                                   -- silent nvim message when sourcing session file
-  use_git_branch = true,                                            -- create session files based on the branch of the git enabled repository
-  autosave = true,                                                  -- automatically save session files when exiting Neovim
-  should_autosave = nil,                                            -- function to determine if a session should be autosaved
-  autoload = true,                                                  -- automatically load the session for the cwd on Neovim startup
-  on_autoload_no_session = nil,                                     -- function to run when `autoload = true` but there is no session to load
-  follow_cwd = true,                                                -- change session file name to match current working directory if it changes
-  allowed_dirs = nil,                                               -- table of dirs that the plugin will auto-save and auto-load from
-  ignored_dirs = nil,                                               -- table of dirs that are ignored when auto-saving and auto-loading
-  telescope = {                                                     -- options for the telescope extension
-    reset_prompt_after_deletion = true,                             -- whether to reset prompt after session deleted
+  silent = false, -- silent nvim message when sourcing session file
+  use_git_branch = true, -- create session files based on the branch of the git enabled repository
+  autosave = true, -- automatically save session files when exiting Neovim
+  should_autosave = nil, -- function to determine if a session should be autosaved
+  autoload = true, -- automatically load the session for the cwd on Neovim startup
+  on_autoload_no_session = nil, -- function to run when `autoload = true` but there is no session to load
+  follow_cwd = true, -- change session file name to match current working directory if it changes
+  allowed_dirs = nil, -- table of dirs that the plugin will auto-save and auto-load from
+  ignored_dirs = nil, -- table of dirs that are ignored when auto-saving and auto-loading
+  telescope = { -- options for the telescope extension
+    reset_prompt_after_deletion = true, -- whether to reset prompt after session deleted
   },
 })
 
@@ -326,7 +345,7 @@ require("telescope").setup({
         ["<C-x>"] = false,
         ["<C-j>"] = actions.move_selection_next,
         ["<C-k>"] = actions.move_selection_previous,
-        ["<C-q>"] = actions.send_to_qflist,
+        ["<C-q>"] = actions.smart_send_to_qflist,
         ["<C-s>"] = actions.cycle_previewers_next,
         ["<C-a>"] = actions.cycle_previewers_prev,
         ["<esc>"] = actions.close,
@@ -356,6 +375,7 @@ require("telescope").setup({
       side_by_side = true,
       layout_config = {
         preview_height = 0.8,
+        sorting_strategy = "descending",
       },
     },
   },
@@ -364,6 +384,7 @@ require("telescope").setup({
 require("telescope").load_extension("fzf")
 require("telescope").load_extension("ui-select")
 require("telescope").load_extension("undo")
+require("telescope").load_extension("file_browser")
 
 -- Disable underline
 vim.diagnostic.config({
@@ -394,11 +415,19 @@ vim.api.nvim_set_keymap("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR
 vim.api.nvim_set_keymap("n", "<space>e", "<cmd>lua vim.diagnostic.open_float()<CR>", { silent = true })
 vim.api.nvim_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { silent = true })
 vim.api.nvim_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", { silent = true })
+vim.api.nvim_set_keymap("n", "<A-]>", "<cmd>Lspsaga peek_definition<CR>", { silent = true })
 
 -- nvim tree
-vim.api.nvim_set_keymap("n", "<space>f", "<cmd>NvimTreeToggle<CR>", { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap("n", "<space>f", "<cmd>NvimTreeToggle<CR>", { noremap = true, silent = true })
 
 -- Telescope
+vim.api.nvim_set_keymap("n", "<space>F", "<CMD>Telescope file_browser<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap(
+  "n",
+  "<space>f",
+  "<CMD>Telescope file_browser path=%:p:h select_buffer=true<CR>",
+  { noremap = true }
+)
 vim.api.nvim_set_keymap("n", "<C-p>", "<CMD>lua require'telescope-config'.project_files()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<A-p>", "<CMD>Telescope find_files<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<C-b>", "<CMD>Telescope buffers<CR>", { noremap = true })
