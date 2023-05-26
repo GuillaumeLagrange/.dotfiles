@@ -320,6 +320,9 @@ for_window [workspace="0"] layout tabbed
 
 for_window [title="Bluetooth Devices"] floating enable
 
+# Make PiP follow
+for_window [title="Picture-in-Picture"] sticky enable
+
 # Assign workspaces to monitors
 workspace "1" output $mainmonitor
 workspace "3" output $mainmonitor
