@@ -1,5 +1,3 @@
-local nvim_lsp = require("lspconfig")
-
 -- nvim-autopairs
 require('nvim-autopairs').setup()
 
@@ -65,7 +63,12 @@ require("mason-lspconfig").setup_handlers {
 
 -- typescript
 require("typescript").setup({
-  server = {
+  disable_commands = false, -- prevent the plugin from creating Vim commands
+  debug = false, -- enable debug logging for commands
+  go_to_source_definition = {
+    fallback = true, -- fall back to standard LSP definition on failure
+  },
+  server = { -- pass options to lspconfig's setup method
     on_attach = function(client, bufnr)
       vim.keymap.set("n", "<space>rf", ":TypescriptRenameFile<CR>", { silent = true, buffer = bufnr })
       vim.keymap.set("n", "<space>i", ":TypescriptAddMissingImports<CR>", { silent = true, buffer = bufnr })
@@ -77,7 +80,7 @@ require("typescript").setup({
 -- eslint
 require 'lspconfig'.eslint.setup {
   on_attach = function(client, bufnr)
-    vim.api.nvim_exec('autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll', false)
+    vim.keymap.set("n", "<space>t", ":EslintFixAll<CR>", { silent = true, buffer = bufnr })
   end
 }
 
@@ -124,30 +127,6 @@ require("null-ls").setup({
     end
   end,
 })
-
--- lua
--- require'lspconfig'.sumneko_lua.setup {
---   settings = {
---     Lua = {
---       runtime = {
---         -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
---         version = 'LuaJIT',
---       },
---       diagnostics = {
---         -- Get the language server to recognize the `vim` global
---         globals = {'vim'},
---       },
---       workspace = {
---         -- Make the server aware of Neovim runtime files
---         library = vim.api.nvim_get_runtime_file("", true),
---       },
---       -- Do not send telemetry data containing a randomized but unique identifier
---       telemetry = {
---         enable = false,
---       },
---     },
---   },
--- }
 
 -- nvim-cmp
 vim.o.completeopt = "menu,menuone,noselect"
@@ -203,7 +182,7 @@ cmp.setup({
   }),
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
-    { name = 'buffer',  keyword_length = 3 },
+    { name = 'buffer', keyword_length = 3 },
   }),
   formatting = {
     format = function(_, vim_item)
@@ -239,7 +218,7 @@ cmp.setup.cmdline(':', {
 require 'nvim-treesitter.configs'.setup {
   ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   highlight = {
-    enable = true,          -- false will disable the whole extension
+    enable = true, -- false will disable the whole extension
   },
   indent = {
     enable = true
@@ -292,17 +271,17 @@ require 'lualine'.setup {
 -- require('mini.starter').setup()
 require("persisted").setup({
   save_dir = vim.fn.expand(vim.fn.stdpath("data") .. "/sessions/"), -- directory where session files are saved
-  silent = false,                                                   -- silent nvim message when sourcing session file
-  use_git_branch = true,                                            -- create session files based on the branch of the git enabled repository
-  autosave = true,                                                  -- automatically save session files when exiting Neovim
-  should_autosave = nil,                                            -- function to determine if a session should be autosaved
-  autoload = true,                                                  -- automatically load the session for the cwd on Neovim startup
-  on_autoload_no_session = nil,                                     -- function to run when `autoload = true` but there is no session to load
-  follow_cwd = true,                                                -- change session file name to match current working directory if it changes
-  allowed_dirs = nil,                                               -- table of dirs that the plugin will auto-save and auto-load from
-  ignored_dirs = nil,                                               -- table of dirs that are ignored when auto-saving and auto-loading
-  telescope = {                                                     -- options for the telescope extension
-    reset_prompt_after_deletion = true,                             -- whether to reset prompt after session deleted
+  silent = false, -- silent nvim message when sourcing session file
+  use_git_branch = true, -- create session files based on the branch of the git enabled repository
+  autosave = true, -- automatically save session files when exiting Neovim
+  should_autosave = nil, -- function to determine if a session should be autosaved
+  autoload = true, -- automatically load the session for the cwd on Neovim startup
+  on_autoload_no_session = nil, -- function to run when `autoload = true` but there is no session to load
+  follow_cwd = true, -- change session file name to match current working directory if it changes
+  allowed_dirs = nil, -- table of dirs that the plugin will auto-save and auto-load from
+  ignored_dirs = nil, -- table of dirs that are ignored when auto-saving and auto-loading
+  telescope = { -- options for the telescope extension
+    reset_prompt_after_deletion = true, -- whether to reset prompt after session deleted
   },
 })
 
@@ -335,13 +314,13 @@ require('telescope').setup {
     color_devicons    = true,
     path_display      = { "truncate" },
 
-    sorting_strategy  = "ascending",
+    sorting_strategy = "ascending",
 
-    file_previewer    = require('telescope.previewers').vim_buffer_cat.new,
-    grep_previewer    = require('telescope.previewers').vim_buffer_vimgrep.new,
-    qflist_previewer  = require('telescope.previewers').vim_buffer_qflist.new,
+    file_previewer   = require('telescope.previewers').vim_buffer_cat.new,
+    grep_previewer   = require('telescope.previewers').vim_buffer_vimgrep.new,
+    qflist_previewer = require('telescope.previewers').vim_buffer_qflist.new,
 
-    mappings          = {
+    mappings = {
       i = {
         ["<C-x>"] = false,
         ["<C-j>"] = actions.move_selection_next,
@@ -371,12 +350,19 @@ require('telescope').setup {
       override_generic_sorter = false,
       override_file_sorter = true,
       case_mode = "smart_case",
-    }
+    },
+    undo = {
+      side_by_side = true,
+      layout_config = {
+        preview_height = 0.8,
+      },
+    },
   },
 }
 
 require('telescope').load_extension('fzf')
 require("telescope").load_extension("ui-select")
+require("telescope").load_extension("undo")
 
 -- Disable underline
 vim.diagnostic.config({
@@ -400,7 +386,6 @@ vim.api.nvim_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.bu
 vim.api.nvim_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', { silent = true })
 vim.api.nvim_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', { silent = true })
 vim.api.nvim_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', { silent = true })
-vim.api.nvim_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', { silent = true })
 vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', { silent = true })
 vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', { silent = true })
 vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', { silent = true })
@@ -415,4 +400,5 @@ vim.api.nvim_set_keymap("n", "<C-b>", "<CMD>Telescope buffers<CR>", { noremap = 
 vim.api.nvim_set_keymap("n", "<C-f>", "<CMD>Telescope live_grep<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<C-e>", "<CMD>Telescope grep_string<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<C-g>", "<CMD>Telescope git_bcommits<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<C-s>", "<CMD>Telescope lsp_references<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<C-a>", "<CMD>lua vim.lsp.buf.code_action()<CR>", { noremap = true })

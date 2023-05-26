@@ -31,8 +31,8 @@ Plug 'jose-elias-alvarez/typescript.nvim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'debugloop/telescope-undo.nvim'
 Plug 'nvim-telescope/telescope-ui-select.nvim'
-Plug 'echasnovski/mini.nvim'
 Plug 'olimorris/persisted.nvim'
 Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 Plug 'nvim-lualine/lualine.nvim'
