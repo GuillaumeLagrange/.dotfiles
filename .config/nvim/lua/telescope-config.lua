@@ -1,4 +1,3 @@
--- telescope-config.lua
 local M = {}
 
 M.project_files = function()

@@ -4,6 +4,9 @@ require("nvim-autopairs").setup()
 -- web-devicons
 require("nvim-web-devicons").setup()
 
+-- noice
+require("noice").setup()
+
 -- nvim-tree
 require("nvim-tree").setup({
   diagnostics = {
