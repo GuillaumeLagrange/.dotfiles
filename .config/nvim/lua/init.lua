@@ -56,6 +56,7 @@ require("mason-lspconfig").setup_handlers({
           workspace = {
             -- Make the server aware of Neovim runtime files
             library = vim.api.nvim_get_runtime_file("", true),
+            checkThirdParty = false,
           },
           -- Do not send telemetry data containing a randomized but unique identifier
           telemetry = {
@@ -149,8 +150,6 @@ require("null-ls").setup({
   end,
 })
 
-require("lspsaga").setup({})
-
 -- nvim-cmp
 vim.o.completeopt = "menu,menuone,noselect"
 local cmp = require("cmp")
@@ -239,7 +238,7 @@ cmp.setup.cmdline(":", {
 
 -- Tree sitter
 require("nvim-treesitter.configs").setup({
-  ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ensure_installed = { "c", "cpp", "go", "lua", "markdown", "python", "rust", "tsx", "typescript", "vim" },
   highlight = {
     enable = true, -- false will disable the whole extension
   },

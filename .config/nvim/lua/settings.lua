@@ -1,7 +1,5 @@
 local opt = vim.opt -- global options
 
-vim.g.mapleader = " "
-
 -- Theme
 vim.g.gruvbox_termcolors = 256
 vim.g.gruvbox_contrast_dark = "hard"
