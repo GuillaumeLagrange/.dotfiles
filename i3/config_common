@@ -63,7 +63,7 @@ bindsym $mod+Shift+w exec chromium
 # bluetooth
 bindsym $mod+b exec blueman-manager
 
-bindsym $mod+space exec rofimoji
+bindsym $mod+Tab exec rofimoji
 
 # change focus
 bindsym $mod+h focus left
@@ -107,7 +107,7 @@ bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-# bindsym $mod+space focus mode_toggle
+bindsym $mod+space focus mode_toggle
 
 # focus the parent container
 bindsym $mod+q focus parent
@@ -322,6 +322,8 @@ for_window [title="Bluetooth Devices"] floating enable
 
 # Make PiP follow
 for_window [title="Picture-in-Picture"] sticky enable
+
+for_window [floating] border pixel 1
 
 # Assign workspaces to monitors
 workspace "1" output $mainmonitor

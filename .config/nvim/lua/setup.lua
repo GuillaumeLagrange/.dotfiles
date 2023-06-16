@@ -437,4 +437,5 @@ vim.api.nvim_set_keymap("n", "<C-f>", "<CMD>Telescope live_grep<CR>", { noremap 
 vim.api.nvim_set_keymap("n", "<C-e>", "<CMD>Telescope grep_string<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<C-g>", "<CMD>Telescope git_bcommits<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<C-s>", "<CMD>Telescope lsp_references<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<C-Space>", "<CMD>Telescope resume<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<C-a>", "<CMD>lua vim.lsp.buf.code_action()<CR>", { noremap = true })
