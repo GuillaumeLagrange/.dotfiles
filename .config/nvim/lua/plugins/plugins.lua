@@ -14,16 +14,30 @@ return {
   "editorconfig/editorconfig-vim",
 
   -- Nvim plugins
-  "nvim-treesitter/nvim-treesitter", -- {'do': ':TSUpdate'}
+  {
+    -- Highlight, edit, and navigate code
+    "nvim-treesitter/nvim-treesitter",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+    },
+    build = ":TSUpdate",
+  },
   "p00f/nvim-ts-rainbow",
   "lukas-reineke/indent-blankline.nvim",
-  "hrsh7th/nvim-cmp",
-  "hrsh7th/cmp-nvim-lsp",
-  "hrsh7th/cmp-buffer",
-  "hrsh7th/cmp-cmdline",
-  "hrsh7th/cmp-path",
-  "hrsh7th/cmp-vsnip",
-  "hrsh7th/vim-vsnip",
+  {
+    -- Autocompletion
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      -- Snippet Engine & its associated nvim-cmp source
+      "L3MON4D3/LuaSnip",
+      "saadparwaiz1/cmp_luasnip",
+
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-cmdline",
+      "hrsh7th/cmp-path",
+    },
+  },
   "neovim/nvim-lspconfig",
   "nvim-lua/plenary.nvim",
   "jose-elias-alvarez/null-ls.nvim",

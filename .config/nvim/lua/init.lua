@@ -112,6 +112,7 @@ local lSsources = {
     filetypes = {
       "javascript",
       "typescript",
+      "typescriptreact",
       "css",
       "scss",
       "html",
@@ -182,11 +183,14 @@ local cmp_kinds = {
   TypeParameter = "  ",
 }
 
+local luasnip = require("luasnip")
+require("luasnip.loaders.from_vscode").lazy_load()
+luasnip.config.setup({})
+
 cmp.setup({
   snippet = {
-    -- REQUIRED - you must specify a snippet engine
     expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+      luasnip.lsp_expand(args.body)
     end,
   },
   mapping = cmp.mapping.preset.insert({
@@ -238,7 +242,7 @@ cmp.setup.cmdline(":", {
 
 -- Tree sitter
 require("nvim-treesitter.configs").setup({
-  ensure_installed = { "c", "cpp", "go", "lua", "markdown", "python", "rust", "tsx", "typescript", "vim" },
+  ensure_installed = { "c", "cpp", "go", "lua", "markdown", "python", "rust", "tsx", "typescript", "vim", "vimdoc" },
   highlight = {
     enable = true, -- false will disable the whole extension
   },
@@ -247,6 +251,15 @@ require("nvim-treesitter.configs").setup({
   },
   rainbow = {
     enable = true,
+  },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "gnn", -- set to `false` to disable one of the mappings
+      node_incremental = "grn",
+      scope_incremental = "grc",
+      node_decremental = "grm",
+    },
   },
 })
 
@@ -350,7 +363,6 @@ require("telescope").setup({
         ["<C-q>"] = actions.smart_send_to_qflist,
         ["<C-s>"] = actions.cycle_previewers_next,
         ["<C-a>"] = actions.cycle_previewers_prev,
-        ["<esc>"] = actions.close,
       },
       n = {
         ["<C-s>"] = actions.cycle_previewers_next,
@@ -387,6 +399,7 @@ require("telescope").load_extension("fzf")
 require("telescope").load_extension("ui-select")
 require("telescope").load_extension("undo")
 require("telescope").load_extension("file_browser")
+require("telescope").load_extension("persisted")
 
 -- Disable underline
 vim.diagnostic.config({
