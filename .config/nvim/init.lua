@@ -13,7 +13,13 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup("plugins")
+require("lazy").setup("plugins", {
+  dev = {
+    -- directory where you store your local plugin projects
+    path = "~/lua/nvim-plugins",
+    fallback = true, -- Fallback to git when local plugin doesn't exist
+  },
+})
 require("settings")
 require("mappings")
-require("init")
+require("setup")

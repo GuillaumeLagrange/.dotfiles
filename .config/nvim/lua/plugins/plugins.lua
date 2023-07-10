@@ -43,7 +43,7 @@ return {
   "jose-elias-alvarez/null-ls.nvim",
   "jose-elias-alvarez/typescript.nvim",
   "iamcco/markdown-preview.nvim", -- { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-  "olimorris/persisted.nvim",
+  { "olimorris/persisted.nvim", dev = true },
   "folke/tokyonight.nvim", -- { 'branch': 'main' }
   "nvim-lualine/lualine.nvim",
   "kyazdani42/nvim-tree.lua",

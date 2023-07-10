@@ -35,4 +35,4 @@ opt.ignorecase = true
 opt.smartcase = true
 opt.signcolumn = "yes"
 
-opt.isk.extends = "-" -- consider "-" as part of a word
+opt.iskeyword:append("-") -- consider "-" as part of a word

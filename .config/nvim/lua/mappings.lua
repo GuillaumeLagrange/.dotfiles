@@ -29,7 +29,6 @@ u.tmap("<Esc>", "<C-\\><C-n>")
 u.nmap("<leader>q", ":bp<bar>sp<bar>bn<bar>bd<CR>")
 
 -- Fugitive
-
 u.nmap("<leader>gw", ":Gwrite<CR>")
 u.nmap("<leader>gr", ":Gread<CR>")
 u.nmap("<leader>gc", ":Git commit -v<CR>")
@@ -37,3 +36,6 @@ u.nmap("<leader>gC", ":Git commit -v --amend<CR>")
 u.nmap("<leader>gs", ":Git<CR>")
 u.nmap("<leader>gd", ":Gdiff<CR>")
 u.nmap("<leader>gb", ":Git blame<CR>")
+
+u.nmap("<C-d>", "<C-d>zz")
+u.nmap("<C-u>", "<C-u>zz")
