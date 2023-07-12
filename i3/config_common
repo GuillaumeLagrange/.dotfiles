@@ -184,9 +184,10 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # Audio controls
-bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+1 i3blocks
-bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+1 i3blocks
-bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+1 i3blocks
+set $volumenotification '/usr/share/sounds/freedesktop/stereo/audio-volume-change.oga'
+bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master on 5%+ && pkill -RTMIN+1 i3blocks && paplay $volumenotification
+bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master on 5%- && pkill -RTMIN+1 i3blocks && paplay $volumenotification
+bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+1 i3blocks && paplay $volumenotification
 # Media play/pause next/previous
 bindsym XF86AudioPause exec playerctl play-pause
 bindsym XF86AudioPlay exec playerctl play-pause
@@ -319,6 +320,7 @@ for_window [class="Spotify"] move to workspace 10
 for_window [workspace="0"] layout tabbed
 
 for_window [title="Bluetooth Devices"] floating enable
+for_window [title="Proton Mail Bridge"] floating enable
 
 # Make PiP follow
 for_window [title="Picture-in-Picture"] sticky enable

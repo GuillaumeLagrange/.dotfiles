@@ -54,6 +54,7 @@ ZSH_THEME="gnzh"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     git
+    rust
     archlinux
     npm
     docker
