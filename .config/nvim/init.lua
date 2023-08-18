@@ -13,6 +13,10 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+if vim.g.vscode then
+  return
+end
+
 require("lazy").setup("plugins", {
   dev = {
     -- directory where you store your local plugin projects
@@ -20,6 +24,7 @@ require("lazy").setup("plugins", {
     fallback = true, -- Fallback to git when local plugin doesn't exist
   },
 })
+
 require("settings")
 require("mappings")
 require("setup")

@@ -54,6 +54,7 @@ ZSH_THEME="gnzh"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     git
+    zsh-autosuggestions
     rust
     archlinux
     npm
@@ -86,6 +87,8 @@ alias generate-tags='ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .'
 alias grst='git reset'
 alias grst1='git reset HEAD~1'
 alias gfu='gc --fixup'
+
+alias s="kitty +kitten ssh"
 
 # fzf aliases
 alias gaf='git add $(git ls-files --modified --others --exclude-standard | fzf -m --height=40% --reverse)'
@@ -135,12 +138,16 @@ man() {
 # thefuck
 eval $(thefuck --alias)
 
+# direnv
+eval "$(direnv hook zsh)"
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 [ -f ~/.zshrc_local ]  && source ~/.zshrc_local
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
 
 PATH="/home/glagrange/perl5/bin${PATH:+:${PATH}}"; export PATH;
+export PATH="$HOME/tools/DataGrip-2021.1.1/bin:$PATH"
 PERL5LIB="/home/glagrange/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
 PERL_LOCAL_LIB_ROOT="/home/glagrange/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
 PERL_MB_OPT="--install_base \"/home/glagrange/perl5\""; export PERL_MB_OPT;
@@ -155,3 +162,24 @@ export PATH="$PNPM_HOME:$PATH"
 export PATH="/home/glagrange/.local/share/fnm:$PATH"
 eval "`fnm env`"
 eval "$(fnm env --use-on-cd)"
+
+# Stockly helpers
+export STOCKLY_MAIN=$HOME/stockly/Main
+
+smake()
+{
+        if [ -d "./StocklyContinuousDeployment" ]; then
+                make -C './StocklyContinuousDeployment' $@
+        else
+                make -C './scd' $@
+        fi
+}
+cdr() {
+        cd "$STOCKLY_MAIN/$@"
+}
+compdef '_files -W "$STOCKLY_MAIN" -/' cdr
+wr() {
+        cdr $@ && code . && cargo watch
+}
+compdef '_files -W "$STOCKLY_MAIN" -/' wr
+alias c="code ."

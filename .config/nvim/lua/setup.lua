@@ -25,6 +25,18 @@ require("nvim-tree").setup({
 -- gitsigns
 require("gitsigns").setup()
 
+-- -- TODO: Clean this up
+-- vim.api.nvim_create_autocmd({ "InsertEnter" }, {
+--   callback = function()
+--     vim.lsp.inlay_hint(0, true)
+--   end,
+-- })
+-- vim.api.nvim_create_autocmd({ "InsertLeave" }, {
+--   callback = function()
+--     vim.lsp.inlay_hint(0, true)
+--   end,
+-- })
+
 -- lsp
 require("mason").setup()
 require("mason-lspconfig").setup()
@@ -37,9 +49,34 @@ require("mason-lspconfig").setup_handlers({
   end,
   -- Next, you can provide a dedicated handler for specific servers.
   -- For example, a handler override for the `rust_analyzer`:
-  -- ["rust_analyzer"] = function ()
-  --   require("rust-tools").setup {}
-  -- end
+  ["rust_analyzer"] = function()
+    local rt = require("rust-tools")
+    rt.setup({
+      tools = {
+        inlay_hints = {
+          auto = false,
+        },
+      },
+      server = {
+        settings = {
+          ["rust-analyzer"] = {
+            -- cargo = {
+            --   features = "all",
+            -- },
+          },
+        },
+        on_attach = function(client, bufnr)
+          if client.server_capabilities.inlayHintProvider then
+            vim.lsp.inlay_hint(bufnr, true)
+          end
+          -- Hover actions
+          vim.keymap.set("n", "K", rt.hover_actions.hover_actions, { buffer = bufnr })
+          -- Code action groups
+          vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+        end,
+      },
+    })
+  end,
   -- lua_ls
   ["lua_ls"] = function()
     require("lspconfig").lua_ls.setup({
@@ -93,24 +130,32 @@ require("lspconfig").eslint.setup({
 })
 
 -- rust-tools
-local rt = require("rust-tools")
-rt.setup({
-  server = {
-    settings = {
-      ["rust-analyzer"] = {
-        cargo = {
-          features = "all",
-        },
-      },
-    },
-    on_attach = function(_, bufnr)
-      -- Hover actions
-      vim.keymap.set("n", "K", rt.hover_actions.hover_actions, { buffer = bufnr })
-      -- Code action groups
-      vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-    end,
-  },
-})
+-- local rt = require("rust-tools")
+-- rt.setup({
+--   tools = {
+--     inlay_hints = {
+--       auto = false,
+--     },
+--   },
+--   server = {
+--     settings = {
+--       ["rust-analyzer"] = {
+--         cargo = {
+--           features = "all",
+--         },
+--       },
+--     },
+--     on_attach = function(client, bufnr)
+--       if client.server_capabilities.inlayHintProvider then
+--         vim.lsp.inlay_hint(bufnr, true)
+--       end
+--       -- Hover actions
+--       vim.keymap.set("n", "K", rt.hover_actions.hover_actions, { buffer = bufnr })
+--       -- Code action groups
+--       vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+--     end,
+--   },
+-- })
 
 -- nullls
 local null_ls = require("null-ls")

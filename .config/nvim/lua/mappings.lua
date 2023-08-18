@@ -39,3 +39,5 @@ u.nmap("<leader>gb", ":Git blame<CR>")
 
 u.nmap("<C-d>", "<C-d>zz")
 u.nmap("<C-u>", "<C-u>zz")
+
+u.nmap("<F9>", ":lua vim.lsp.inlay_hint(0)<CR>")
