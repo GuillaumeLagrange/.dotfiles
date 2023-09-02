@@ -68,6 +68,8 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
+bindkey '^ ' autosuggest-accept
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
 export PATH=~/.local/bin:$PATH
@@ -89,6 +91,9 @@ alias grst1='git reset HEAD~1'
 alias gfu='gc --fixup'
 
 alias s="kitty +kitten ssh"
+alias sc="s charybdis.stockly.tech"
+alias scl="s charybdis"
+export GPG_TTY=$(tty)
 
 # fzf aliases
 alias gaf='git add $(git ls-files --modified --others --exclude-standard | fzf -m --height=40% --reverse)'

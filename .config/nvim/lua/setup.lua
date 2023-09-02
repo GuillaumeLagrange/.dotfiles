@@ -1,3 +1,7 @@
+-- debug lsp
+vim.lsp.set_log_level("info")
+require("vim.lsp.log").set_format_func(vim.inspect)
+
 -- nvim-autopairs
 require("nvim-autopairs").setup()
 
@@ -49,34 +53,8 @@ require("mason-lspconfig").setup_handlers({
   end,
   -- Next, you can provide a dedicated handler for specific servers.
   -- For example, a handler override for the `rust_analyzer`:
-  ["rust_analyzer"] = function()
-    local rt = require("rust-tools")
-    rt.setup({
-      tools = {
-        inlay_hints = {
-          auto = false,
-        },
-      },
-      server = {
-        settings = {
-          ["rust-analyzer"] = {
-            -- cargo = {
-            --   features = "all",
-            -- },
-          },
-        },
-        on_attach = function(client, bufnr)
-          if client.server_capabilities.inlayHintProvider then
-            vim.lsp.inlay_hint(bufnr, true)
-          end
-          -- Hover actions
-          vim.keymap.set("n", "K", rt.hover_actions.hover_actions, { buffer = bufnr })
-          -- Code action groups
-          vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-        end,
-      },
-    })
-  end,
+  -- ["rust_analyzer"] = function()
+  -- end,
   -- lua_ls
   ["lua_ls"] = function()
     require("lspconfig").lua_ls.setup({
@@ -129,33 +107,35 @@ require("lspconfig").eslint.setup({
   end,
 })
 
--- rust-tools
--- local rt = require("rust-tools")
--- rt.setup({
---   tools = {
---     inlay_hints = {
---       auto = false,
---     },
---   },
---   server = {
---     settings = {
---       ["rust-analyzer"] = {
---         cargo = {
---           features = "all",
---         },
---       },
---     },
---     on_attach = function(client, bufnr)
---       if client.server_capabilities.inlayHintProvider then
---         vim.lsp.inlay_hint(bufnr, true)
---       end
---       -- Hover actions
---       vim.keymap.set("n", "K", rt.hover_actions.hover_actions, { buffer = bufnr })
---       -- Code action groups
---       vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
---     end,
---   },
--- })
+require("lspconfig").rust_analyzer.setup({
+  settings = {
+    ["rust-analyzer"] = {
+      cargo = {
+        features = "all",
+        check = {
+          overrideCommand = {
+            "cargo check --quiet --message-format=json --all-targets",
+          },
+        },
+        buildScripts = {
+          overideCommand = {
+            "cargo check --quiet --message-format=json --all-targets",
+          },
+        },
+      },
+    },
+  },
+  root_dir = function(fname)
+    return vim.loop.cwd()
+  end,
+  on_attach = function(client, bufnr)
+    if client.server_capabilities.inlayHintProvider then
+      vim.lsp.inlay_hint(bufnr, true)
+
+      vim.api.nvim_set_keymap("n", "<F12>", "<CMD>lua vim.lsp.inlay_hint(0)<CR>", { noremap = true })
+    end
+  end,
+})
 
 -- nullls
 local null_ls = require("null-ls")
@@ -475,15 +455,15 @@ vim.api.nvim_set_keymap("n", "<A-]>", "<cmd>Lspsaga peek_definition<CR>", { sile
 -- vim.api.nvim_set_keymap("n", "<space>f", "<cmd>NvimTreeToggle<CR>", { noremap = true, silent = true })
 
 -- Telescope
-vim.api.nvim_set_keymap("n", "<space>F", "<CMD>Telescope file_browser<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<space>fF", "<CMD>Telescope file_browser<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap(
   "n",
-  "<space>f",
+  "<space>ff",
   "<CMD>Telescope file_browser path=%:p:h select_buffer=true<CR>",
   { noremap = true }
 )
-vim.api.nvim_set_keymap("n", "<C-p>", "<CMD>lua require'telescope-config'.project_files()<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<A-p>", "<CMD>Telescope find_files<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<space>fg", "<CMD>lua require'telescope-config'.project_files()<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<C-p>", "<CMD>Telescope find_files<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<C-b>", "<CMD>Telescope buffers<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<C-f>", "<CMD>Telescope live_grep<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<C-e>", "<CMD>Telescope grep_string<CR>", { noremap = true })
