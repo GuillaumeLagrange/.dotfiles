@@ -8,7 +8,7 @@ export ZSH=~/.oh-my-zsh
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="gnzh"
+ZSH_THEME="bira"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -83,6 +83,7 @@ export EDITOR="$VISUAL"
 
 alias vi="nvim"
 alias vim="nvim"
+export NVIM_APPNAME='lazyvim'
 alias cat="bat"
 alias dualscreen="xrandr --output HDMI1 --auto --above eDP1"
 alias generate-tags='ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .'
@@ -90,9 +91,12 @@ alias grst='git reset'
 alias grst1='git reset HEAD~1'
 alias gfu='gc --fixup'
 
-alias s="kitty +kitten ssh"
+alias s="kitty +kitten ssh -CY"
 alias sc="s charybdis.stockly.tech"
+alias svim="s -t charybdis.stockly.tech 'exec env LANG=C.UTF-8 tmux new-session -A -s nvim'"
+alias sbo="s -t charybdis.stockly.tech 'exec env LANG=C.UTF-8 tmux new-session -A -s bo'"
 alias scl="s charybdis"
+alias insomnia-gen="ssh charybdis.stockly.tech 'source ~/.zshrc && cdr dev_tools/InsomniaConfig && cargo run --release -- --certs-path /home/glagrange/stockly/Main/StocklyContinuousDeployment/certificates' && scp charybdis.stockly.tech:stockly/Main/dev_tools/InsomniaConfig/insomnia_collection.json ."
 export GPG_TTY=$(tty)
 
 # fzf aliases
@@ -147,6 +151,8 @@ eval $(thefuck --alias)
 eval "$(direnv hook zsh)"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+bindkey -r '\ec'
 
 [ -f ~/.zshrc_local ]  && source ~/.zshrc_local
 export FZF_DEFAULT_COMMAND='rg --files --hidden'

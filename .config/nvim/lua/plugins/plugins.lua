@@ -37,7 +37,6 @@ return {
   "David-Kunz/jester",
   "williamboman/mason.nvim", -- { 'do': ':MasonUpdate' }
   "williamboman/mason-lspconfig.nvim",
-  { "simrat39/rust-tools.nvim" },
   "mfussenegger/nvim-dap",
   "folke/noice.nvim",
   "MunifTanjim/nui.nvim",

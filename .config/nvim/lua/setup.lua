@@ -1,5 +1,5 @@
 -- debug lsp
-vim.lsp.set_log_level("info")
+vim.lsp.set_log_level("debug")
 require("vim.lsp.log").set_format_func(vim.inspect)
 
 -- nvim-autopairs
@@ -107,36 +107,6 @@ require("lspconfig").eslint.setup({
   end,
 })
 
-require("lspconfig").rust_analyzer.setup({
-  settings = {
-    ["rust-analyzer"] = {
-      cargo = {
-        features = "all",
-        check = {
-          overrideCommand = {
-            "cargo check --quiet --message-format=json --all-targets",
-          },
-        },
-        buildScripts = {
-          overideCommand = {
-            "cargo check --quiet --message-format=json --all-targets",
-          },
-        },
-      },
-    },
-  },
-  root_dir = function(fname)
-    return vim.loop.cwd()
-  end,
-  on_attach = function(client, bufnr)
-    if client.server_capabilities.inlayHintProvider then
-      vim.lsp.inlay_hint(bufnr, true)
-
-      vim.api.nvim_set_keymap("n", "<F12>", "<CMD>lua vim.lsp.inlay_hint(0)<CR>", { noremap = true })
-    end
-  end,
-})
-
 -- nullls
 local null_ls = require("null-ls")
 local lSsources = {
@@ -160,10 +130,10 @@ local lSsources = {
   null_ls.builtins.formatting.stylua,
 }
 
-local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 require("null-ls").setup({
   sources = lSsources,
   on_attach = function(client, bufnr)
+    local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
     if client.supports_method("textDocument/formatting") then
       vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
       vim.api.nvim_create_autocmd("BufWritePre", {
