@@ -285,7 +285,7 @@ for_window {
     [window_role="(pop-up|bubble|dialog)"] floating enable
     [title="KeePassXC"] floating enable
     [title="Bluetooth Devices"] floating enable
-    [title="^Picture-in-Picture$" app_id="firefox"] floating enable, sticky enable, exec $i3-move-to bottom-right,
+    [title="^Picture-in-Picture$" app_id="firefox"] floating enable, border pixel 1, sticky enable, exec $i3-move-to bottom-right,
     [app_id="firefox"] inhibit_idle fullscreen
     [title="Volume Control"] floating enable
 }
